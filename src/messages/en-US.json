@@ -38,6 +38,11 @@
       "submitting": "Submitting..."
     },
     "genericError": "Could not complete the signup",
+    "addressLookup": {
+      "loading": "Looking up address...",
+      "notFound": "ZIP code not found. Please fill in the address manually.",
+      "error": "Could not look up the address. Please fill in manually."
+    },
     "success": {
       "title": "Account created successfully!",
       "description": "Once the backend is ready, this signup will actually be sent."

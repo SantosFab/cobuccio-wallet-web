@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -13,6 +13,7 @@ import {
   type SignupFormInput,
   type SignupFormOutput,
 } from '@/lib/validations/signup-schema'
+import { CepNotFoundError, lookupAddressByCep } from '@/services/cep-service'
 import { signup, SignupServiceError } from '@/services/signup-service'
 
 const inputClassName =
@@ -23,18 +24,23 @@ type SubmitState =
   | { status: 'error'; message: string }
   | { status: 'success' }
 
+type AddressLookupStatus = 'idle' | 'loading' | 'not-found' | 'error'
+
 export function SignupForm() {
   const translate = useTranslations('SignupForm')
   const translateErrors = useTranslations('SignupForm.errors')
   const translateStates = useTranslations('States')
 
   const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
+  const [addressLookupStatus, setAddressLookupStatus] = useState<AddressLookupStatus>('idle')
+  const latestZipCodeLookupRef = useRef('')
 
   const signupSchema = useMemo(() => createSignupSchema(translateErrors), [translateErrors])
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInput, unknown, SignupFormOutput>({
     resolver: zodResolver(signupSchema),
@@ -74,6 +80,34 @@ export function SignupForm() {
     }
   }
 
+  async function handleZipCodeChange(maskedZipCode: string) {
+    const zipCodeDigits = maskedZipCode.replace(/\D/g, '')
+
+    if (zipCodeDigits.length !== 8) {
+      setAddressLookupStatus('idle')
+      return
+    }
+
+    latestZipCodeLookupRef.current = zipCodeDigits
+    setAddressLookupStatus('loading')
+
+    try {
+      const address = await lookupAddressByCep(zipCodeDigits)
+
+      if (latestZipCodeLookupRef.current !== zipCodeDigits) return
+
+      setValue('address.street', address.street, { shouldValidate: true })
+      setValue('address.neighborhood', address.neighborhood, { shouldValidate: true })
+      setValue('address.city', address.city, { shouldValidate: true })
+      setValue('address.state', address.state, { shouldValidate: true })
+      setAddressLookupStatus('idle')
+    } catch (error) {
+      if (latestZipCodeLookupRef.current !== zipCodeDigits) return
+
+      setAddressLookupStatus(error instanceof CepNotFoundError ? 'not-found' : 'error')
+    }
+  }
+
   if (submitState.status === 'success') {
     return (
       <div className="rounded-md border border-green-600/30 bg-green-600/10 p-6 text-center">
@@ -84,6 +118,12 @@ export function SignupForm() {
       </div>
     )
   }
+
+  // Registered outside `register(...)`'s onChange option so this event
+  // handler is a plain JSX prop instead of a closure passed into a
+  // render-time function call — the ref read inside `handleZipCodeChange`
+  // then happens only when the event actually fires, not during render.
+  const zipCodeField = register('address.zipCode')
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-8">
@@ -166,12 +206,26 @@ export function SignupForm() {
               inputMode="numeric"
               placeholder={translate('placeholders.zipCode')}
               className={inputClassName}
-              {...register('address.zipCode', {
-                onChange: (event) => {
-                  event.target.value = maskCep(event.target.value)
-                },
-              })}
+              {...zipCodeField}
+              onChange={(event) => {
+                event.target.value = maskCep(event.target.value)
+                zipCodeField.onChange(event)
+                handleZipCodeChange(event.target.value)
+              }}
             />
+            {addressLookupStatus === 'loading' && (
+              <p className="text-sm text-neutral-500">{translate('addressLookup.loading')}</p>
+            )}
+            {addressLookupStatus === 'not-found' && (
+              <p className="text-sm text-amber-600 dark:text-amber-400">
+                {translate('addressLookup.notFound')}
+              </p>
+            )}
+            {addressLookupStatus === 'error' && (
+              <p className="text-sm text-amber-600 dark:text-amber-400">
+                {translate('addressLookup.error')}
+              </p>
+            )}
           </FormField>
 
           <FormField

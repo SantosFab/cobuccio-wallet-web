@@ -38,6 +38,11 @@
       "submitting": "Enviando..."
     },
     "genericError": "Não foi possível concluir o cadastro",
+    "addressLookup": {
+      "loading": "Buscando endereço...",
+      "notFound": "CEP não encontrado. Preencha o endereço manualmente.",
+      "error": "Não foi possível buscar o endereço. Preencha manualmente."
+    },
     "success": {
       "title": "Cadastro realizado com sucesso!",
       "description": "Assim que o back-end estiver pronto, este cadastro passará a ser enviado de verdade."
