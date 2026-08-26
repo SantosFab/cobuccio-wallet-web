@@ -3,6 +3,7 @@
 import { useTransition } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 
+import { Select } from '@/components/ui/select'
 import { routing } from '@/i18n/routing'
 import { usePathname, useRouter } from '@/i18n/navigation'
 
@@ -22,18 +23,18 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <select
+    <Select
+      variant="header"
       aria-label={translate('label')}
       value={locale}
       disabled={isPending}
       onChange={(event) => handleChange(event.target.value as Locale)}
-      className="rounded-md border border-neutral-300 bg-transparent px-2 py-1 text-sm dark:border-neutral-700"
     >
       {routing.locales.map((availableLocale) => (
         <option key={availableLocale} value={availableLocale}>
           {translate(availableLocale)}
         </option>
       ))}
-    </select>
+    </Select>
   )
 }

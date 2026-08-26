@@ -6,6 +6,9 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { FormField } from '@/components/form-field'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Select } from '@/components/ui/select'
 import { BRAZILIAN_STATES } from '@/lib/brazilian-states'
 import { maskCep, maskCpf, maskCurrency, maskPhone } from '@/lib/masks'
 import {
@@ -15,9 +18,6 @@ import {
 } from '@/lib/validations/signup-schema'
 import { CepNotFoundError, lookupAddressByCep } from '@/services/cep-service'
 import { signup, SignupServiceError } from '@/services/signup-service'
-
-const inputClassName =
-  'rounded-md border border-neutral-300 bg-transparent px-3 py-2 text-sm outline-none focus:border-neutral-900 dark:border-neutral-700 dark:focus:border-neutral-100'
 
 type SubmitState =
   | { status: 'idle' }
@@ -111,7 +111,7 @@ export function SignupForm() {
   if (submitState.status === 'success') {
     return (
       <div className="rounded-md border border-green-600/30 bg-green-600/10 p-6 text-center">
-        <h2 className="text-lg font-semibold">{translate('success.title')}</h2>
+        <h2 className="font-serif text-lg font-semibold">{translate('success.title')}</h2>
         <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
           {translate('success.description')}
         </p>
@@ -128,28 +128,25 @@ export function SignupForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-8">
       <fieldset className="flex flex-col gap-4">
-        <legend className="text-base font-semibold">{translate('legends.personalData')}</legend>
+        <legend className="border-l-2 border-gold pl-2 text-base font-semibold">
+          {translate('legends.personalData')}
+        </legend>
 
         <FormField label={translate('fields.name')} htmlFor="name" error={errors.name?.message}>
-          <input id="name" className={inputClassName} {...register('name')} />
+          <Input id="name" aria-invalid={!!errors.name} {...register('name')} />
         </FormField>
 
         <FormField label={translate('fields.email')} htmlFor="email" error={errors.email?.message}>
-          <input
-            id="email"
-            type="email"
-            className={inputClassName}
-            {...register('email')}
-          />
+          <Input id="email" type="email" aria-invalid={!!errors.email} {...register('email')} />
         </FormField>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <FormField label={translate('fields.cpf')} htmlFor="cpf" error={errors.cpf?.message}>
-            <input
+            <Input
               id="cpf"
               inputMode="numeric"
               placeholder={translate('placeholders.cpf')}
-              className={inputClassName}
+              aria-invalid={!!errors.cpf}
               {...register('cpf', {
                 onChange: (event) => {
                   event.target.value = maskCpf(event.target.value)
@@ -159,11 +156,11 @@ export function SignupForm() {
           </FormField>
 
           <FormField label={translate('fields.phone')} htmlFor="phone" error={errors.phone?.message}>
-            <input
+            <Input
               id="phone"
               inputMode="numeric"
               placeholder={translate('placeholders.phone')}
-              className={inputClassName}
+              aria-invalid={!!errors.phone}
               {...register('phone', {
                 onChange: (event) => {
                   event.target.value = maskPhone(event.target.value)
@@ -178,11 +175,11 @@ export function SignupForm() {
           htmlFor="monthlyIncome"
           error={errors.monthlyIncome?.message}
         >
-          <input
+          <Input
             id="monthlyIncome"
             inputMode="numeric"
             placeholder={translate('placeholders.monthlyIncome')}
-            className={inputClassName}
+            aria-invalid={!!errors.monthlyIncome}
             {...register('monthlyIncome', {
               onChange: (event) => {
                 event.target.value = maskCurrency(event.target.value)
@@ -193,7 +190,9 @@ export function SignupForm() {
       </fieldset>
 
       <fieldset className="flex flex-col gap-4">
-        <legend className="text-base font-semibold">{translate('legends.address')}</legend>
+        <legend className="border-l-2 border-gold pl-2 text-base font-semibold">
+          {translate('legends.address')}
+        </legend>
 
         <div className="grid gap-4 sm:grid-cols-[2fr_1fr]">
           <FormField
@@ -201,11 +200,11 @@ export function SignupForm() {
             htmlFor="address.zipCode"
             error={errors.address?.zipCode?.message}
           >
-            <input
+            <Input
               id="address.zipCode"
               inputMode="numeric"
               placeholder={translate('placeholders.zipCode')}
-              className={inputClassName}
+              aria-invalid={!!errors.address?.zipCode}
               {...zipCodeField}
               onChange={(event) => {
                 event.target.value = maskCep(event.target.value)
@@ -233,9 +232,9 @@ export function SignupForm() {
             htmlFor="address.state"
             error={errors.address?.state?.message}
           >
-            <select
+            <Select
               id="address.state"
-              className={inputClassName}
+              aria-invalid={!!errors.address?.state}
               {...register('address.state')}
             >
               <option value="">{translate('fields.statePlaceholder')}</option>
@@ -244,7 +243,7 @@ export function SignupForm() {
                   {translateStates(state)}
                 </option>
               ))}
-            </select>
+            </Select>
           </FormField>
         </div>
 
@@ -254,9 +253,9 @@ export function SignupForm() {
             htmlFor="address.street"
             error={errors.address?.street?.message}
           >
-            <input
+            <Input
               id="address.street"
-              className={inputClassName}
+              aria-invalid={!!errors.address?.street}
               {...register('address.street')}
             />
           </FormField>
@@ -266,9 +265,9 @@ export function SignupForm() {
             htmlFor="address.number"
             error={errors.address?.number?.message}
           >
-            <input
+            <Input
               id="address.number"
-              className={inputClassName}
+              aria-invalid={!!errors.address?.number}
               {...register('address.number')}
             />
           </FormField>
@@ -279,9 +278,9 @@ export function SignupForm() {
           htmlFor="address.complement"
           error={errors.address?.complement?.message}
         >
-          <input
+          <Input
             id="address.complement"
-            className={inputClassName}
+            aria-invalid={!!errors.address?.complement}
             {...register('address.complement')}
           />
         </FormField>
@@ -292,9 +291,9 @@ export function SignupForm() {
             htmlFor="address.neighborhood"
             error={errors.address?.neighborhood?.message}
           >
-            <input
+            <Input
               id="address.neighborhood"
-              className={inputClassName}
+              aria-invalid={!!errors.address?.neighborhood}
               {...register('address.neighborhood')}
             />
           </FormField>
@@ -304,9 +303,9 @@ export function SignupForm() {
             htmlFor="address.city"
             error={errors.address?.city?.message}
           >
-            <input
+            <Input
               id="address.city"
-              className={inputClassName}
+              aria-invalid={!!errors.address?.city}
               {...register('address.city')}
             />
           </FormField>
@@ -314,17 +313,19 @@ export function SignupForm() {
       </fieldset>
 
       <fieldset className="flex flex-col gap-4">
-        <legend className="text-base font-semibold">{translate('legends.security')}</legend>
+        <legend className="border-l-2 border-gold pl-2 text-base font-semibold">
+          {translate('legends.security')}
+        </legend>
 
         <FormField
           label={translate('fields.password')}
           htmlFor="password"
           error={errors.password?.message}
         >
-          <input
+          <Input
             id="password"
             type="password"
-            className={inputClassName}
+            aria-invalid={!!errors.password}
             {...register('password')}
           />
         </FormField>
@@ -334,10 +335,10 @@ export function SignupForm() {
           htmlFor="confirmPassword"
           error={errors.confirmPassword?.message}
         >
-          <input
+          <Input
             id="confirmPassword"
             type="password"
-            className={inputClassName}
+            aria-invalid={!!errors.confirmPassword}
             {...register('confirmPassword')}
           />
         </FormField>
@@ -347,13 +348,9 @@ export function SignupForm() {
         <p className="text-sm text-red-600 dark:text-red-400">{submitState.message}</p>
       )}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="rounded-md bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-neutral-100 dark:text-neutral-900"
-      >
+      <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? translate('submit.submitting') : translate('submit.idle')}
-      </button>
+      </Button>
     </form>
   )
 }

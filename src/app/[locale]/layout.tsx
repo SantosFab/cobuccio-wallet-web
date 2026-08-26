@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
+import { Playfair_Display, Rubik } from 'next/font/google'
 import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { ThemeProvider } from 'next-themes'
@@ -9,14 +9,16 @@ import { ThemeToggle } from '@/components/theme-toggle'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const playfairDisplay = Playfair_Display({
+  variable: '--font-playfair',
   subsets: ['latin'],
+  weight: ['400', '500', '600'],
 })
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const rubik = Rubik({
+  variable: '--font-rubik',
   subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
 })
 
 export function generateStaticParams() {
@@ -44,14 +46,22 @@ export default async function RootLayout({ children, params }: Props) {
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${playfairDisplay.variable} ${rubik.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>
-            <header className="flex items-center justify-end gap-2 p-4">
-              <ThemeToggle />
-              <LocaleSwitcher />
+            <header className="flex items-center justify-between gap-4 bg-navy px-4 py-3 text-white">
+              <div className="flex items-center gap-2">
+                <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-gold font-serif text-sm text-gold">
+                  CW
+                </span>
+                <span className="font-serif text-lg tracking-wide">Cobuccio Wallet</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <ThemeToggle />
+                <LocaleSwitcher />
+              </div>
             </header>
             {children}
           </NextIntlClientProvider>

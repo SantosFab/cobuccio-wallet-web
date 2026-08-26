@@ -4,6 +4,8 @@ import { useSyncExternalStore } from 'react'
 import { useTranslations } from 'next-intl'
 import { useTheme } from 'next-themes'
 
+import { Button } from '@/components/ui/button'
+
 const THEME_ORDER = ['system', 'light', 'dark'] as const
 
 type ThemeOption = (typeof THEME_ORDER)[number]
@@ -109,15 +111,16 @@ export function ThemeToggle() {
   const Icon = THEME_ICONS[currentTheme]
 
   return (
-    <button
+    <Button
       type="button"
+      variant="header"
+      size="icon"
       onClick={() => setTheme(nextTheme)}
       disabled={!hasMounted}
       aria-label={translate('switchTo', { theme: translate(nextTheme) })}
       title={translate('current', { theme: translate(currentTheme) })}
-      className="rounded-md border border-neutral-300 bg-transparent p-1.5 text-neutral-700 disabled:opacity-50 dark:border-neutral-700 dark:text-neutral-300"
     >
       <Icon />
-    </button>
+    </Button>
   )
 }
