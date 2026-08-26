@@ -1,4 +1,30 @@
 {
+  "DashboardPage": {
+    "welcome": "Welcome, {name}!",
+    "logout": "Log out"
+  },
+  "LoginPage": {
+    "metaTitle": "Log in | Cobuccio Wallet",
+    "title": "Log in",
+    "description": "Access your Cobuccio Wallet account."
+  },
+  "LoginForm": {
+    "fields": {
+      "email": "Email",
+      "password": "Password"
+    },
+    "submit": {
+      "idle": "Log in",
+      "submitting": "Logging in..."
+    },
+    "genericError": "Could not log in",
+    "errors": {
+      "emailInvalid": "Invalid email",
+      "passwordRequired": "Enter your password",
+      "invalidCredentials": "Invalid email or password",
+      "tooManyAttempts": "Too many attempts. Wait a minute and try again."
+    }
+  },
   "SignupPage": {
     "metaTitle": "Sign up | Cobuccio Wallet",
     "title": "Create account",

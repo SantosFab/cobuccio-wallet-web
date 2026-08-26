@@ -6,6 +6,7 @@ import { ThemeProvider } from 'next-themes'
 
 import { LocaleSwitcher } from '@/components/locale-switcher'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { AuthProvider } from '@/contexts/auth-context'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
@@ -51,19 +52,21 @@ export default async function RootLayout({ children, params }: Props) {
       <body className="min-h-full flex flex-col">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>
-            <header className="flex items-center justify-between gap-4 bg-navy px-4 py-3 text-white">
-              <div className="flex items-center gap-2">
-                <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-gold font-serif text-sm text-gold">
-                  CW
-                </span>
-                <span className="font-serif text-lg tracking-wide">Cobuccio Wallet</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <ThemeToggle />
-                <LocaleSwitcher />
-              </div>
-            </header>
-            {children}
+            <AuthProvider>
+              <header className="flex items-center justify-between gap-4 bg-navy px-4 py-3 text-white">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-gold font-serif text-sm text-gold">
+                    CW
+                  </span>
+                  <span className="font-serif text-lg tracking-wide">Cobuccio Wallet</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ThemeToggle />
+                  <LocaleSwitcher />
+                </div>
+              </header>
+              {children}
+            </AuthProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
