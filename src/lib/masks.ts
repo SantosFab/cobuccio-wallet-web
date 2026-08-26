@@ -14,12 +14,6 @@ export function maskCpf(value: string): string {
 export function maskPhone(value: string): string {
   const digits = digitsOnly(value).slice(0, 11)
 
-  if (digits.length <= 10) {
-    return digits
-      .replace(/(\d{2})(\d)/, '($1) $2')
-      .replace(/(\d{4})(\d)/, '$1-$2')
-  }
-
   return digits
     .replace(/(\d{2})(\d)/, '($1) $2')
     .replace(/(\d{5})(\d)/, '$1-$2')

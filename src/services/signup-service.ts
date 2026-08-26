@@ -6,7 +6,14 @@ export interface SignupResponse {
   email: string
 }
 
-export type SignupErrorCode = 'emailAlreadyRegistered'
+export type SignupErrorCode = 'emailAlreadyRegistered' | 'cpfAlreadyRegistered'
+
+// Maps the API's `code` (from a 409 ConflictException body) to the
+// translation-ready codes this module exposes to the form.
+const ERROR_CODE_BY_API_CODE: Record<string, SignupErrorCode> = {
+  EMAIL_ALREADY_REGISTERED: 'emailAlreadyRegistered',
+  CPF_ALREADY_REGISTERED: 'cpfAlreadyRegistered',
+}
 
 export class SignupServiceError extends Error {
   constructor(public readonly code: SignupErrorCode) {
@@ -14,31 +21,44 @@ export class SignupServiceError extends Error {
   }
 }
 
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms))
+interface ApiErrorBody {
+  code?: string
+  message?: string
 }
 
-/**
- * Mocked signup call. Swap the body for a real `fetch` to the API
- * once the signup endpoint exists — the payload/response shape stays the same.
- * Throws `SignupServiceError` with a translation-ready code instead of a
- * hardcoded message, since this module can't call `useTranslations` itself.
- */
 export async function signup(payload: SignupFormOutput): Promise<SignupResponse> {
-  console.log('[signup-service] - submitting mocked signup payload', payload)
-
-  await delay(1200)
-
-  if (payload.email === 'existing@cobuccio.com') {
-    console.log('[signup-service] - mocked conflict for existing email')
-    throw new SignupServiceError('emailAlreadyRegistered')
-  }
-
-  console.log('[signup-service] - mocked signup succeeded')
-
-  return {
-    id: crypto.randomUUID(),
+  // `confirmPassword` only exists for client-side validation — the API's
+  // CreateUserDto doesn't know it and rejects unknown fields with a 400.
+  const createUserPayload = {
     name: payload.name,
     email: payload.email,
+    cpf: payload.cpf,
+    phone: payload.phone,
+    address: payload.address,
+    monthlyIncome: payload.monthlyIncome,
+    password: payload.password,
   }
+
+  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(createUserPayload),
+  })
+
+  if (!response.ok) {
+    const body: ApiErrorBody = await response.json().catch(() => ({}))
+    const errorCode = body.code ? ERROR_CODE_BY_API_CODE[body.code] : undefined
+
+    console.log('[signup-service] - signup rejected by the API', {
+      status: response.status,
+      body,
+    })
+
+    if (errorCode) throw new SignupServiceError(errorCode)
+    throw new Error(body.message ?? `Signup failed with status ${response.status}`)
+  }
+
+  console.log('[signup-service] - signup succeeded')
+
+  return response.json() as Promise<SignupResponse>
 }

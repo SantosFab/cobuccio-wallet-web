@@ -45,7 +45,7 @@
     },
     "success": {
       "title": "Cadastro realizado com sucesso!",
-      "description": "Assim que o back-end estiver pronto, este cadastro passará a ser enviado de verdade."
+      "description": "Sua conta foi criada."
     },
     "errors": {
       "nameRequired": "Informe seu nome completo",
@@ -63,7 +63,8 @@
       "passwordTooShort": "A senha deve ter no mínimo 8 caracteres",
       "passwordWeak": "A senha deve ter letra maiúscula, minúscula e número",
       "passwordsDoNotMatch": "As senhas não coincidem",
-      "emailAlreadyRegistered": "Este e-mail já está cadastrado"
+      "emailAlreadyRegistered": "Este e-mail já está cadastrado",
+      "cpfAlreadyRegistered": "Este CPF já está cadastrado"
     }
   },
   "States": {

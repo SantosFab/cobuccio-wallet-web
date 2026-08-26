@@ -41,9 +41,11 @@ export function SignupForm() {
     register,
     handleSubmit,
     setValue,
+    trigger,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInput, unknown, SignupFormOutput>({
     resolver: zodResolver(signupSchema),
+    mode: 'onTouched',
     defaultValues: {
       name: '',
       email: '',
@@ -119,12 +121,6 @@ export function SignupForm() {
     )
   }
 
-  // Registered outside `register(...)`'s onChange option so this event
-  // handler is a plain JSX prop instead of a closure passed into a
-  // render-time function call — the ref read inside `handleZipCodeChange`
-  // then happens only when the event actually fires, not during render.
-  const zipCodeField = register('address.zipCode')
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-8">
       <fieldset className="flex flex-col gap-4">
@@ -149,7 +145,16 @@ export function SignupForm() {
               aria-invalid={!!errors.cpf}
               {...register('cpf', {
                 onChange: (event) => {
-                  event.target.value = maskCpf(event.target.value)
+                  // Mutating event.target.value here would only fix what's
+                  // on screen — RHF already captured the raw value into its
+                  // internal state before this callback runs, so setValue
+                  // is what actually corrects the value used for validation.
+                  // shouldValidate is required too: RHF compares the value it
+                  // captured for this event against the current one before
+                  // applying a validation result, and since we just changed
+                  // it ourselves, that guard silently drops the result —
+                  // shouldValidate runs a fresh, independent validation pass.
+                  setValue('cpf', maskCpf(event.target.value), { shouldValidate: true })
                 },
               })}
             />
@@ -163,7 +168,7 @@ export function SignupForm() {
               aria-invalid={!!errors.phone}
               {...register('phone', {
                 onChange: (event) => {
-                  event.target.value = maskPhone(event.target.value)
+                  setValue('phone', maskPhone(event.target.value), { shouldValidate: true })
                 },
               })}
             />
@@ -182,7 +187,7 @@ export function SignupForm() {
             aria-invalid={!!errors.monthlyIncome}
             {...register('monthlyIncome', {
               onChange: (event) => {
-                event.target.value = maskCurrency(event.target.value)
+                setValue('monthlyIncome', maskCurrency(event.target.value), { shouldValidate: true })
               },
             })}
           />
@@ -205,12 +210,13 @@ export function SignupForm() {
               inputMode="numeric"
               placeholder={translate('placeholders.zipCode')}
               aria-invalid={!!errors.address?.zipCode}
-              {...zipCodeField}
-              onChange={(event) => {
-                event.target.value = maskCep(event.target.value)
-                zipCodeField.onChange(event)
-                handleZipCodeChange(event.target.value)
-              }}
+              {...register('address.zipCode', {
+                onChange: (event) => {
+                  const maskedZipCode = maskCep(event.target.value)
+                  setValue('address.zipCode', maskedZipCode, { shouldValidate: true })
+                  handleZipCodeChange(maskedZipCode)
+                },
+              })}
             />
             {addressLookupStatus === 'loading' && (
               <p className="text-sm text-neutral-500">{translate('addressLookup.loading')}</p>
@@ -326,7 +332,15 @@ export function SignupForm() {
             id="password"
             type="password"
             aria-invalid={!!errors.password}
-            {...register('password')}
+            {...register('password', {
+              onChange: () => {
+                // Fixing the password itself won't auto re-validate
+                // confirmPassword's cross-field "match" check on its own,
+                // since RHF only revalidates a field on change once that
+                // same field already has an error.
+                trigger('confirmPassword')
+              },
+            })}
           />
         </FormField>
 

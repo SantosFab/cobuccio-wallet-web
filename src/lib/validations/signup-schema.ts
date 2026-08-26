@@ -3,8 +3,8 @@ import { z as zod } from 'zod'
 
 import { parseCurrencyToNumber } from '@/lib/masks'
 import { isValidCpf } from '@/lib/validators/cpf'
+import { isValidPhone } from '@/lib/validators/phone'
 
-const PHONE_REGEX = /^\(\d{2}\) \d{4,5}-\d{4}$/
 const CEP_REGEX = /^\d{5}-\d{3}$/
 const UF_REGEX = /^[A-Z]{2}$/
 const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/
@@ -35,7 +35,7 @@ export function createSignupSchema(translateErrors: SignupErrorsTranslator) {
         .transform((value) => value.replace(/\D/g, '')),
       phone: zod
         .string()
-        .regex(PHONE_REGEX, { message: translateErrors('phoneInvalid') })
+        .refine(isValidPhone, { message: translateErrors('phoneInvalid') })
         .transform((value) => value.replace(/\D/g, '')),
       address: addressSchema,
       monthlyIncome: zod

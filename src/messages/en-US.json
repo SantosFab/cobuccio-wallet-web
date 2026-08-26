@@ -45,7 +45,7 @@
     },
     "success": {
       "title": "Account created successfully!",
-      "description": "Once the backend is ready, this signup will actually be sent."
+      "description": "Your account has been created."
     },
     "errors": {
       "nameRequired": "Enter your full name",
@@ -63,7 +63,8 @@
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordWeak": "Password must have an uppercase letter, a lowercase letter and a number",
       "passwordsDoNotMatch": "Passwords do not match",
-      "emailAlreadyRegistered": "This email is already registered"
+      "emailAlreadyRegistered": "This email is already registered",
+      "cpfAlreadyRegistered": "This CPF is already registered"
     }
   },
   "States": {
