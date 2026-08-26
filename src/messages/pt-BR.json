@@ -1,0 +1,98 @@
+{
+  "SignupPage": {
+    "metaTitle": "Criar conta | Cobuccio Wallet",
+    "title": "Criar conta",
+    "description": "Preencha seus dados para começar a usar a Cobuccio Wallet."
+  },
+  "SignupForm": {
+    "legends": {
+      "personalData": "Dados pessoais",
+      "address": "Endereço",
+      "security": "Segurança"
+    },
+    "fields": {
+      "name": "Nome completo",
+      "email": "E-mail",
+      "cpf": "CPF",
+      "phone": "Telefone",
+      "monthlyIncome": "Renda mensal declarada",
+      "zipCode": "CEP",
+      "state": "UF",
+      "statePlaceholder": "Selecione",
+      "street": "Rua",
+      "number": "Número",
+      "complement": "Complemento (opcional)",
+      "neighborhood": "Bairro",
+      "city": "Cidade",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha"
+    },
+    "placeholders": {
+      "cpf": "000.000.000-00",
+      "phone": "(00) 00000-0000",
+      "monthlyIncome": "R$ 0,00",
+      "zipCode": "00000-000"
+    },
+    "submit": {
+      "idle": "Criar conta",
+      "submitting": "Enviando..."
+    },
+    "genericError": "Não foi possível concluir o cadastro",
+    "success": {
+      "title": "Cadastro realizado com sucesso!",
+      "description": "Assim que o back-end estiver pronto, este cadastro passará a ser enviado de verdade."
+    },
+    "errors": {
+      "nameRequired": "Informe seu nome completo",
+      "emailInvalid": "E-mail inválido",
+      "cpfInvalid": "CPF inválido",
+      "phoneInvalid": "Telefone inválido",
+      "zipCodeInvalid": "CEP inválido",
+      "streetRequired": "Informe a rua",
+      "numberRequired": "Informe o número",
+      "neighborhoodRequired": "Informe o bairro",
+      "cityRequired": "Informe a cidade",
+      "stateInvalid": "UF inválida",
+      "monthlyIncomeRequired": "Informe sua renda mensal declarada",
+      "monthlyIncomeInvalid": "Informe uma renda mensal válida",
+      "passwordTooShort": "A senha deve ter no mínimo 8 caracteres",
+      "passwordWeak": "A senha deve ter letra maiúscula, minúscula e número",
+      "passwordsDoNotMatch": "As senhas não coincidem",
+      "emailAlreadyRegistered": "Este e-mail já está cadastrado"
+    }
+  },
+  "States": {
+    "AC": "Acre",
+    "AL": "Alagoas",
+    "AP": "Amapá",
+    "AM": "Amazonas",
+    "BA": "Bahia",
+    "CE": "Ceará",
+    "DF": "Distrito Federal",
+    "ES": "Espírito Santo",
+    "GO": "Goiás",
+    "MA": "Maranhão",
+    "MT": "Mato Grosso",
+    "MS": "Mato Grosso do Sul",
+    "MG": "Minas Gerais",
+    "PA": "Pará",
+    "PB": "Paraíba",
+    "PR": "Paraná",
+    "PE": "Pernambuco",
+    "PI": "Piauí",
+    "RJ": "Rio de Janeiro",
+    "RN": "Rio Grande do Norte",
+    "RS": "Rio Grande do Sul",
+    "RO": "Rondônia",
+    "RR": "Roraima",
+    "SC": "Santa Catarina",
+    "SP": "São Paulo",
+    "SE": "Sergipe",
+    "TO": "Tocantins"
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma",
+    "pt-BR": "Português (Brasil)",
+    "en-US": "English (US)"
+  }
+}

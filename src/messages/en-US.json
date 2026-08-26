@@ -1,0 +1,98 @@
+{
+  "SignupPage": {
+    "metaTitle": "Sign up | Cobuccio Wallet",
+    "title": "Create account",
+    "description": "Fill in your details to start using Cobuccio Wallet."
+  },
+  "SignupForm": {
+    "legends": {
+      "personalData": "Personal data",
+      "address": "Address",
+      "security": "Security"
+    },
+    "fields": {
+      "name": "Full name",
+      "email": "Email",
+      "cpf": "CPF",
+      "phone": "Phone",
+      "monthlyIncome": "Declared monthly income",
+      "zipCode": "ZIP code",
+      "state": "State",
+      "statePlaceholder": "Select",
+      "street": "Street",
+      "number": "Number",
+      "complement": "Complement (optional)",
+      "neighborhood": "Neighborhood",
+      "city": "City",
+      "password": "Password",
+      "confirmPassword": "Confirm password"
+    },
+    "placeholders": {
+      "cpf": "000.000.000-00",
+      "phone": "(00) 00000-0000",
+      "monthlyIncome": "R$ 0,00",
+      "zipCode": "00000-000"
+    },
+    "submit": {
+      "idle": "Create account",
+      "submitting": "Submitting..."
+    },
+    "genericError": "Could not complete the signup",
+    "success": {
+      "title": "Account created successfully!",
+      "description": "Once the backend is ready, this signup will actually be sent."
+    },
+    "errors": {
+      "nameRequired": "Enter your full name",
+      "emailInvalid": "Invalid email",
+      "cpfInvalid": "Invalid CPF",
+      "phoneInvalid": "Invalid phone",
+      "zipCodeInvalid": "Invalid ZIP code",
+      "streetRequired": "Enter the street",
+      "numberRequired": "Enter the number",
+      "neighborhoodRequired": "Enter the neighborhood",
+      "cityRequired": "Enter the city",
+      "stateInvalid": "Invalid state",
+      "monthlyIncomeRequired": "Enter your declared monthly income",
+      "monthlyIncomeInvalid": "Enter a valid monthly income",
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordWeak": "Password must have an uppercase letter, a lowercase letter and a number",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "emailAlreadyRegistered": "This email is already registered"
+    }
+  },
+  "States": {
+    "AC": "Acre State",
+    "AL": "Alagoas State",
+    "AP": "Amapá State",
+    "AM": "Amazonas State",
+    "BA": "Bahia State",
+    "CE": "Ceará State",
+    "DF": "Federal District",
+    "ES": "Espírito Santo State",
+    "GO": "Goiás State",
+    "MA": "Maranhão State",
+    "MT": "Mato Grosso State",
+    "MS": "Mato Grosso do Sul State",
+    "MG": "Minas Gerais State",
+    "PA": "Pará State",
+    "PB": "Paraíba State",
+    "PR": "Paraná State",
+    "PE": "Pernambuco State",
+    "PI": "Piauí State",
+    "RJ": "Rio de Janeiro State",
+    "RN": "Rio Grande do Norte State",
+    "RS": "Rio Grande do Sul State",
+    "RO": "Rondônia State",
+    "RR": "Roraima State",
+    "SC": "Santa Catarina State",
+    "SP": "São Paulo State",
+    "SE": "Sergipe State",
+    "TO": "Tocantins State"
+  },
+  "LocaleSwitcher": {
+    "label": "Language",
+    "pt-BR": "Português (Brasil)",
+    "en-US": "English (US)"
+  }
+}
