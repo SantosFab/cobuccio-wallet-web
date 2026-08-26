@@ -94,5 +94,12 @@
     "label": "Idioma",
     "pt-BR": "Português (Brasil)",
     "en-US": "English (US)"
+  },
+  "ThemeToggle": {
+    "light": "Claro",
+    "dark": "Escuro",
+    "system": "Sistema",
+    "current": "Tema atual: {theme}",
+    "switchTo": "Mudar para o tema {theme}"
   }
 }
