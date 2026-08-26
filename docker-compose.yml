@@ -1,0 +1,27 @@
+services:
+    web: &web-service
+        restart: unless-stopped
+        build:
+            target: final
+            args:
+                - NODE_VERSION=${NODE_VERSION}
+        hostname: "web"
+        env_file:
+            - "./.env"
+        ports:
+            - "${DOCKER_WEB_PORT:-3000}:3000"
+        volumes:
+            - "web-log-data:/app/logs"
+
+    web-dev:
+        <<: *web-service
+        build:
+            target: dev
+            args:
+                - NODE_VERSION=${NODE_VERSION}
+        volumes:
+            - "web-log-data:/app/logs"
+            - "./:/app"
+
+volumes:
+    web-log-data:

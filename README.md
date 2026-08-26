@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cobuccio Wallet Web
 
-## Getting Started
+Next.js frontend for the wallet challenge, bootstrapped with `create-next-app`.
 
-First, run the development server:
+## Docker (Makefile)
+
+This repo is self-contained: it has its own `Makefile`, `docker-compose.yml` and `.env.example`.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# copy the environment file (the Makefile also does this automatically
+# on the first run of any command, if .env is missing)
+$ cp .env.example .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Available commands, grouped the same way as in the `Makefile`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# dependencies
+$ make install                # installs project dependencies locally (yarn, outside Docker)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+# development
+$ make build-dev               # [dev] builds the development image
+$ make up-dev                  # [dev] starts the development container (hot reload)
+$ make stop-dev                # [dev] stops every container in this repo
 
-## Learn More
+# production
+$ make build                    # [prod] builds the production image
+$ make up                       # [prod] starts the production container
+$ make stop                     # [prod] stops every container in this repo
 
-To learn more about Next.js, take a look at the following resources:
+# misc
+$ make logs SERVICE=web-dev      # follows the logs of a given service (web or web-dev)
+$ make help                      # lists every available command
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Web: http://localhost:3000 (port configurable via `DOCKER_WEB_PORT` in `.env`)
+- Needs `cobuccio-wallet-api` running for `NEXT_PUBLIC_API_URL` to resolve.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Both repos must use the same `COMPOSE_PROJECT_NAME` in their `.env` so they join the same Docker network and can reach each other by hostname.
 
-## Deploy on Vercel
+## Getting Started (without Docker)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+$ yarn dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. You can start editing the page by modifying `src/app/page.tsx` — it auto-updates as you edit the file.
