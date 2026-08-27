@@ -26,6 +26,7 @@ import {
   updateMyProfile,
   uploadMyAvatar,
   UsersServiceError,
+  type UserProfile,
 } from '@/services/users-service'
 
 // Mirrors the backend's Multer config (Uploads.allowedAvatarMimeTypes /
@@ -49,6 +50,26 @@ interface ReadOnlyInfo {
   cpf: string
 }
 
+// Shared by the initial load and by a successful save — both need to set
+// react-hook-form's values (and dirty-comparison baseline) to the same
+// masked shape the inputs actually display.
+function toFormValues(profile: UserProfile): ProfileFormInput {
+  return {
+    email: profile.email,
+    phone: maskPhone(profile.phone),
+    monthlyIncome: formatCurrency(profile.monthlyIncome),
+    address: {
+      zipCode: maskCep(profile.address.zipCode),
+      street: profile.address.street,
+      number: profile.address.number,
+      complement: profile.address.complement ?? '',
+      neighborhood: profile.address.neighborhood,
+      city: profile.address.city,
+      state: profile.address.state,
+    },
+  }
+}
+
 export function ProfileForm() {
   const translate = useTranslations('ProfileForm')
   const translateErrors = useTranslations('FormErrors')
@@ -70,7 +91,7 @@ export function ProfileForm() {
     handleSubmit,
     setValue,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useForm<ProfileFormInput, unknown, ProfileFormOutput>({
     resolver: zodResolver(profileSchema),
     mode: 'onTouched',
@@ -98,20 +119,7 @@ export function ProfileForm() {
         if (cancelled) return
 
         setReadOnlyInfo({ name: profile.name, cpf: profile.cpf })
-        reset({
-          email: profile.email,
-          phone: maskPhone(profile.phone),
-          monthlyIncome: formatCurrency(profile.monthlyIncome),
-          address: {
-            zipCode: maskCep(profile.address.zipCode),
-            street: profile.address.street,
-            number: profile.address.number,
-            complement: profile.address.complement ?? '',
-            neighborhood: profile.address.neighborhood,
-            city: profile.address.city,
-            state: profile.address.state,
-          },
-        })
+        reset(toFormValues(profile))
         setLoadState({ status: 'loaded' })
       })
       .catch(() => {
@@ -139,6 +147,13 @@ export function ProfileForm() {
         email: updated.email,
         avatarUrl: updated.avatarUrl,
       })
+      // Establishes the just-saved values as the new dirty-comparison
+      // baseline — without this, the button would stay enabled after a
+      // successful save, since react-hook-form has no way to know these
+      // values are no longer a pending change. Uses the masked shape
+      // (like the initial load), not the raw zod output `data` — the
+      // inputs display masked values, not the transformed ones.
+      reset(toFormValues(updated))
       setSubmitState({ status: 'success' })
     } catch (error) {
       const message =
@@ -446,7 +461,10 @@ export function ProfileForm() {
             <p className="text-sm text-green-600 dark:text-green-400">{translate('success')}</p>
           )}
 
-          <Button type="submit" disabled={isSubmitting || loadState.status === 'loading'}>
+          <Button
+            type="submit"
+            disabled={isSubmitting || loadState.status === 'loading' || !isDirty}
+          >
             {isSubmitting ? translate('submit.submitting') : translate('submit.idle')}
           </Button>
         </form>
