@@ -4,6 +4,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { ThemeProvider } from 'next-themes'
 
+import { HeaderLogoutButton } from '@/components/header-logout-button'
 import { LocaleSwitcher } from '@/components/locale-switcher'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { AuthProvider } from '@/contexts/auth-context'
@@ -63,6 +64,7 @@ export default async function RootLayout({ children, params }: Props) {
                 <div className="flex items-center gap-2">
                   <ThemeToggle />
                   <LocaleSwitcher />
+                  <HeaderLogoutButton />
                 </div>
               </header>
               {children}

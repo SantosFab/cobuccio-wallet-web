@@ -3,38 +3,43 @@
 import { useTransition } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
 
-import { Select } from '@/components/ui/select'
+import { Button } from '@/components/ui/button'
 import { routing } from '@/i18n/routing'
 import { usePathname, useRouter } from '@/i18n/navigation'
 
 type Locale = (typeof routing.locales)[number]
 
+function getNextLocale(currentLocale: Locale): Locale {
+  const currentIndex = routing.locales.indexOf(currentLocale)
+  return routing.locales[(currentIndex + 1) % routing.locales.length]
+}
+
 export function LocaleSwitcher() {
   const translate = useTranslations('LocaleSwitcher')
-  const locale = useLocale()
+  const locale = useLocale() as Locale
   const pathname = usePathname()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
 
-  function handleChange(nextLocale: Locale) {
+  const nextLocale = getNextLocale(locale)
+
+  function handleClick() {
     startTransition(() => {
       router.replace(pathname, { locale: nextLocale })
     })
   }
 
   return (
-    <Select
+    <Button
+      type="button"
       variant="header"
-      aria-label={translate('label')}
-      value={locale}
+      size="sm"
+      onClick={handleClick}
       disabled={isPending}
-      onChange={(event) => handleChange(event.target.value as Locale)}
+      aria-label={translate('switchTo', { locale: translate(nextLocale) })}
+      title={translate('switchTo', { locale: translate(nextLocale) })}
     >
-      {routing.locales.map((availableLocale) => (
-        <option key={availableLocale} value={availableLocale}>
-          {translate(availableLocale)}
-        </option>
-      ))}
-    </Select>
+      {translate(nextLocale)}
+    </Button>
   )
 }

@@ -1,7 +1,115 @@
 {
   "DashboardPage": {
     "welcome": "Bem-vindo, {name}!",
-    "logout": "Sair"
+    "logout": "Sair",
+    "balance": {
+      "label": "Saldo disponível"
+    },
+    "sections": {
+      "balance": "Saldo",
+      "deposit": "Depositar",
+      "transfer": "Transferir",
+      "history": "Histórico"
+    }
+  },
+  "DashboardSidebar": {
+    "balance": "Saldo",
+    "deposit": "Depositar",
+    "transfer": "Transferir",
+    "history": "Histórico"
+  },
+  "DepositForm": {
+    "fields": {
+      "amount": "Valor",
+      "cardNumber": "Número do cartão",
+      "cardCvv": "CVV",
+      "cardExpiry": "Validade"
+    },
+    "placeholders": {
+      "amount": "R$ 0,00",
+      "cardNumber": "4242 4242 4242 4242",
+      "cardCvv": "123",
+      "cardExpiry": "MM/AA"
+    },
+    "submit": {
+      "idle": "Depositar",
+      "submitting": "Depositando..."
+    },
+    "genericError": "Não foi possível depositar",
+    "errors": {
+      "amountRequired": "Informe o valor",
+      "amountInvalid": "Informe um valor válido",
+      "cardNumberRequired": "Informe o número do cartão",
+      "cardNumberInvalid": "Número de cartão inválido",
+      "cardCvvRequired": "Informe o CVV",
+      "cardCvvInvalid": "O CVV deve ter 3 dígitos",
+      "cardExpiryRequired": "Informe a validade",
+      "cardExpiryInvalid": "Data inválida ou expirada",
+      "insufficientBalance": "Saldo insuficiente",
+      "cannotTransferToSelf": "Você não pode transferir para si mesmo",
+      "recipientNotFound": "Destinatário não encontrado",
+      "transactionNotFound": "Transação não encontrada",
+      "transactionAlreadyReversed": "Essa transação já foi revertida",
+      "cannotReverseOthersTransaction": "Só quem iniciou a transação pode revertê-la",
+      "cannotReverseAReversal": "Uma reversão não pode ser revertida",
+      "invalidCard": "Cartão inválido",
+      "onlyRecipientCanReverse": "Só quem recebeu o dinheiro pode reverter essa transferência"
+    }
+  },
+  "TransferForm": {
+    "fields": {
+      "recipientIdentifier": "E-mail ou CPF do destinatário",
+      "amount": "Valor"
+    },
+    "placeholders": {
+      "recipientIdentifier": "E-mail ou CPF",
+      "amount": "R$ 0,00"
+    },
+    "submit": {
+      "idle": "Transferir",
+      "submitting": "Transferindo..."
+    },
+    "genericError": "Não foi possível transferir",
+    "errors": {
+      "recipientRequired": "Informe o e-mail ou CPF do destinatário",
+      "recipientInvalid": "Informe um e-mail ou CPF válido",
+      "amountRequired": "Informe o valor",
+      "amountInvalid": "Informe um valor válido",
+      "insufficientBalance": "Saldo insuficiente",
+      "cannotTransferToSelf": "Você não pode transferir para si mesmo",
+      "recipientNotFound": "Destinatário não encontrado",
+      "transactionNotFound": "Transação não encontrada",
+      "transactionAlreadyReversed": "Essa transação já foi revertida",
+      "cannotReverseOthersTransaction": "Só quem iniciou a transação pode revertê-la",
+      "cannotReverseAReversal": "Uma reversão não pode ser revertida",
+      "invalidCard": "Cartão inválido",
+      "onlyRecipientCanReverse": "Só quem recebeu o dinheiro pode reverter essa transferência"
+    }
+  },
+  "WalletTransactionList": {
+    "empty": "Nenhuma movimentação ainda.",
+    "reversedTag": "revertida",
+    "types": {
+      "deposit": "Depósito",
+      "transfer": "Transferência",
+      "reversal": "Reversão"
+    },
+    "reverse": {
+      "button": "Reverter",
+      "returnButton": "Devolver dinheiro"
+    },
+    "genericError": "Não foi possível reverter",
+    "errors": {
+      "transactionNotFound": "Transação não encontrada",
+      "transactionAlreadyReversed": "Essa transação já foi revertida",
+      "cannotReverseOthersTransaction": "Só quem iniciou a transação pode revertê-la",
+      "cannotReverseAReversal": "Uma reversão não pode ser revertida",
+      "insufficientBalance": "Saldo insuficiente",
+      "cannotTransferToSelf": "Você não pode transferir para si mesmo",
+      "recipientNotFound": "Destinatário não encontrado",
+      "invalidCard": "Cartão inválido",
+      "onlyRecipientCanReverse": "Só quem recebeu o dinheiro pode reverter essa transferência"
+    }
   },
   "LoginPage": {
     "metaTitle": "Entrar | Cobuccio Wallet",
@@ -123,9 +231,9 @@
     "TO": "Tocantins"
   },
   "LocaleSwitcher": {
-    "label": "Idioma",
-    "pt-BR": "Português (Brasil)",
-    "en-US": "English (US)"
+    "pt-BR": "🇧🇷 PT",
+    "en-US": "🇺🇸 EN",
+    "switchTo": "Mudar para {locale}"
   },
   "ThemeToggle": {
     "light": "Claro",

@@ -1,7 +1,115 @@
 {
   "DashboardPage": {
     "welcome": "Welcome, {name}!",
-    "logout": "Log out"
+    "logout": "Log out",
+    "balance": {
+      "label": "Available balance"
+    },
+    "sections": {
+      "balance": "Balance",
+      "deposit": "Deposit",
+      "transfer": "Transfer",
+      "history": "History"
+    }
+  },
+  "DashboardSidebar": {
+    "balance": "Balance",
+    "deposit": "Deposit",
+    "transfer": "Transfer",
+    "history": "History"
+  },
+  "DepositForm": {
+    "fields": {
+      "amount": "Amount",
+      "cardNumber": "Card number",
+      "cardCvv": "CVV",
+      "cardExpiry": "Expiry"
+    },
+    "placeholders": {
+      "amount": "R$ 0,00",
+      "cardNumber": "4242 4242 4242 4242",
+      "cardCvv": "123",
+      "cardExpiry": "MM/YY"
+    },
+    "submit": {
+      "idle": "Deposit",
+      "submitting": "Depositing..."
+    },
+    "genericError": "Could not deposit",
+    "errors": {
+      "amountRequired": "Enter the amount",
+      "amountInvalid": "Enter a valid amount",
+      "cardNumberRequired": "Enter the card number",
+      "cardNumberInvalid": "Invalid card number",
+      "cardCvvRequired": "Enter the CVV",
+      "cardCvvInvalid": "CVV must have 3 digits",
+      "cardExpiryRequired": "Enter the expiry date",
+      "cardExpiryInvalid": "Invalid or expired date",
+      "insufficientBalance": "Insufficient balance",
+      "cannotTransferToSelf": "You cannot transfer to yourself",
+      "recipientNotFound": "Recipient not found",
+      "transactionNotFound": "Transaction not found",
+      "transactionAlreadyReversed": "This transaction was already reversed",
+      "cannotReverseOthersTransaction": "Only whoever initiated this transaction can reverse it",
+      "cannotReverseAReversal": "A reversal cannot be reversed",
+      "invalidCard": "Invalid card",
+      "onlyRecipientCanReverse": "Only the recipient can reverse this transfer"
+    }
+  },
+  "TransferForm": {
+    "fields": {
+      "recipientIdentifier": "Recipient email or CPF",
+      "amount": "Amount"
+    },
+    "placeholders": {
+      "recipientIdentifier": "Email or CPF",
+      "amount": "R$ 0,00"
+    },
+    "submit": {
+      "idle": "Transfer",
+      "submitting": "Transferring..."
+    },
+    "genericError": "Could not transfer",
+    "errors": {
+      "recipientRequired": "Enter the recipient's email or CPF",
+      "recipientInvalid": "Enter a valid email or CPF",
+      "amountRequired": "Enter the amount",
+      "amountInvalid": "Enter a valid amount",
+      "insufficientBalance": "Insufficient balance",
+      "cannotTransferToSelf": "You cannot transfer to yourself",
+      "recipientNotFound": "Recipient not found",
+      "transactionNotFound": "Transaction not found",
+      "transactionAlreadyReversed": "This transaction was already reversed",
+      "cannotReverseOthersTransaction": "Only whoever initiated this transaction can reverse it",
+      "cannotReverseAReversal": "A reversal cannot be reversed",
+      "invalidCard": "Invalid card",
+      "onlyRecipientCanReverse": "Only the recipient can reverse this transfer"
+    }
+  },
+  "WalletTransactionList": {
+    "empty": "No transactions yet.",
+    "reversedTag": "reversed",
+    "types": {
+      "deposit": "Deposit",
+      "transfer": "Transfer",
+      "reversal": "Reversal"
+    },
+    "reverse": {
+      "button": "Reverse",
+      "returnButton": "Return money"
+    },
+    "genericError": "Could not reverse",
+    "errors": {
+      "transactionNotFound": "Transaction not found",
+      "transactionAlreadyReversed": "This transaction was already reversed",
+      "cannotReverseOthersTransaction": "Only whoever initiated this transaction can reverse it",
+      "cannotReverseAReversal": "A reversal cannot be reversed",
+      "insufficientBalance": "Insufficient balance",
+      "cannotTransferToSelf": "You cannot transfer to yourself",
+      "recipientNotFound": "Recipient not found",
+      "invalidCard": "Invalid card",
+      "onlyRecipientCanReverse": "Only the recipient can reverse this transfer"
+    }
   },
   "LoginPage": {
     "metaTitle": "Log in | Cobuccio Wallet",
@@ -123,9 +231,9 @@
     "TO": "Tocantins State"
   },
   "LocaleSwitcher": {
-    "label": "Language",
-    "pt-BR": "Português (Brasil)",
-    "en-US": "English (US)"
+    "pt-BR": "🇧🇷 PT",
+    "en-US": "🇺🇸 EN",
+    "switchTo": "Switch to {locale}"
   },
   "ThemeToggle": {
     "light": "Light",
