@@ -18,7 +18,7 @@ export default function DashboardBalancePage() {
   }
 
   return (
-    <div className="flex min-h-0 flex-1 flex-col gap-6">
+    <div className="mx-auto flex w-full min-h-0 max-w-xl flex-1 flex-col gap-6">
       <WalletBalanceCard refreshKey={refreshKey} />
 
       <div className="flex flex-col gap-3">

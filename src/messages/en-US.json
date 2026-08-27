@@ -287,5 +287,26 @@
     },
     "success": "Profile updated successfully",
     "genericError": "Could not update the profile"
+  },
+  "ChangePasswordForm": {
+    "title": "Change password",
+    "fields": {
+      "currentPassword": "Current password",
+      "newPassword": "New password",
+      "confirmNewPassword": "Confirm new password"
+    },
+    "submit": {
+      "idle": "Change password",
+      "submitting": "Changing..."
+    },
+    "success": "Password changed successfully",
+    "genericError": "Could not change the password",
+    "errors": {
+      "currentPasswordRequired": "Enter your current password",
+      "passwordTooShort": "Password must be at least 8 characters long",
+      "passwordWeak": "Password must contain an uppercase letter, a lowercase letter and a number",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "invalidCurrentPassword": "Current password is incorrect"
+    }
   }
 }

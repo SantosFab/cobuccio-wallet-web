@@ -7,7 +7,7 @@ export default function DashboardTransferPage() {
   const router = useRouter()
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mx-auto flex w-full max-w-xl flex-col gap-4">
       <TransferForm onSuccess={() => router.push('/dashboard')} />
     </div>
   )

@@ -34,11 +34,23 @@ export interface UpdateProfilePayload {
   }
 }
 
-export type UsersServiceErrorCode = 'emailAlreadyRegistered' | 'unsupportedFileType'
+export interface ChangePasswordPayload {
+  currentPassword: string
+  newPassword: string
+  confirmNewPassword: string
+}
+
+export type UsersServiceErrorCode =
+  | 'emailAlreadyRegistered'
+  | 'unsupportedFileType'
+  | 'invalidCurrentPassword'
+  | 'newPasswordConfirmationMismatch'
 
 const ERROR_CODE_BY_API_CODE: Record<string, UsersServiceErrorCode> = {
   EMAIL_ALREADY_REGISTERED: 'emailAlreadyRegistered',
   UNSUPPORTED_FILE_TYPE: 'unsupportedFileType',
+  INVALID_CURRENT_PASSWORD: 'invalidCurrentPassword',
+  NEW_PASSWORD_CONFIRMATION_MISMATCH: 'newPasswordConfirmationMismatch',
 }
 
 export class UsersServiceError extends Error {
@@ -112,3 +124,9 @@ export async function uploadMyAvatar(file: File): Promise<UserProfile> {
 
 export const removeMyAvatar = () =>
   request<UserProfile>('/users/me/avatar', { method: 'DELETE' })
+
+export const changeMyPassword = (payload: ChangePasswordPayload) =>
+  request<UserProfile>('/users/me/password', {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  })

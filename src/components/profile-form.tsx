@@ -281,20 +281,22 @@ export function ProfileForm() {
           className="flex flex-col gap-4"
           aria-busy={loadState.status === 'loading'}
         >
-          <FormField label={translate('fields.name')} htmlFor="name">
-            <Input id="name" disabled value={readOnlyInfo?.name ?? ''} readOnly />
-          </FormField>
-
-          <FormField label={translate('fields.cpf')} htmlFor="cpf">
-            <Input
-              id="cpf"
-              disabled
-              readOnly
-              value={readOnlyInfo ? maskCpf(readOnlyInfo.cpf) : ''}
-            />
-          </FormField>
-
           <div className="grid gap-4 sm:grid-cols-2">
+            <FormField label={translate('fields.name')} htmlFor="name">
+              <Input id="name" disabled value={readOnlyInfo?.name ?? ''} readOnly />
+            </FormField>
+
+            <FormField label={translate('fields.cpf')} htmlFor="cpf">
+              <Input
+                id="cpf"
+                disabled
+                readOnly
+                value={readOnlyInfo ? maskCpf(readOnlyInfo.cpf) : ''}
+              />
+            </FormField>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
             <FormField label={translate('fields.email')} htmlFor="email" error={errors.email?.message}>
               <Input
                 id="email"
@@ -319,28 +321,28 @@ export function ProfileForm() {
                 })}
               />
             </FormField>
-          </div>
 
-          <FormField
-            label={translate('fields.monthlyIncome')}
-            htmlFor="monthlyIncome"
-            error={errors.monthlyIncome?.message}
-          >
-            <Input
-              id="monthlyIncome"
-              inputMode="numeric"
-              placeholder={translate('placeholders.monthlyIncome')}
-              disabled={loadState.status === 'loading'}
-              aria-invalid={!!errors.monthlyIncome}
-              {...register('monthlyIncome', {
-                onChange: (event) => {
-                  setValue('monthlyIncome', maskCurrency(event.target.value), {
-                    shouldValidate: true,
-                  })
-                },
-              })}
-            />
-          </FormField>
+            <FormField
+              label={translate('fields.monthlyIncome')}
+              htmlFor="monthlyIncome"
+              error={errors.monthlyIncome?.message}
+            >
+              <Input
+                id="monthlyIncome"
+                inputMode="numeric"
+                placeholder={translate('placeholders.monthlyIncome')}
+                disabled={loadState.status === 'loading'}
+                aria-invalid={!!errors.monthlyIncome}
+                {...register('monthlyIncome', {
+                  onChange: (event) => {
+                    setValue('monthlyIncome', maskCurrency(event.target.value), {
+                      shouldValidate: true,
+                    })
+                  },
+                })}
+              />
+            </FormField>
+          </div>
 
           <div className="grid gap-4 sm:grid-cols-[2fr_1fr]">
             <FormField
@@ -413,20 +415,20 @@ export function ProfileForm() {
             </FormField>
           </div>
 
-          <FormField
-            label={translate('fields.complement')}
-            htmlFor="address.complement"
-            error={errors.address?.complement?.message}
-          >
-            <Input
-              id="address.complement"
-              disabled={loadState.status === 'loading'}
-              aria-invalid={!!errors.address?.complement}
-              {...register('address.complement')}
-            />
-          </FormField>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <FormField
+              label={translate('fields.complement')}
+              htmlFor="address.complement"
+              error={errors.address?.complement?.message}
+            >
+              <Input
+                id="address.complement"
+                disabled={loadState.status === 'loading'}
+                aria-invalid={!!errors.address?.complement}
+                {...register('address.complement')}
+              />
+            </FormField>
 
-          <div className="grid gap-4 sm:grid-cols-2">
             <FormField
               label={translate('fields.neighborhood')}
               htmlFor="address.neighborhood"

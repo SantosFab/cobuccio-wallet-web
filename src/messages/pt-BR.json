@@ -287,5 +287,26 @@
     },
     "success": "Perfil atualizado com sucesso",
     "genericError": "Não foi possível atualizar o perfil"
+  },
+  "ChangePasswordForm": {
+    "title": "Alterar senha",
+    "fields": {
+      "currentPassword": "Senha atual",
+      "newPassword": "Nova senha",
+      "confirmNewPassword": "Confirmar nova senha"
+    },
+    "submit": {
+      "idle": "Alterar senha",
+      "submitting": "Alterando..."
+    },
+    "success": "Senha alterada com sucesso",
+    "genericError": "Não foi possível alterar a senha",
+    "errors": {
+      "currentPasswordRequired": "Informe sua senha atual",
+      "passwordTooShort": "A senha deve ter no mínimo 8 caracteres",
+      "passwordWeak": "A senha deve ter letra maiúscula, minúscula e número",
+      "passwordsDoNotMatch": "As senhas não coincidem",
+      "invalidCurrentPassword": "Senha atual incorreta"
+    }
   }
 }

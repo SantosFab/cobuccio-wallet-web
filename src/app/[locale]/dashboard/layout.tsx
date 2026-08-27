@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
       </aside>
 
       <div className="min-h-0 flex-1 px-4 py-8">
-        <div className="mx-auto flex h-full w-full max-w-xl flex-col overflow-y-auto">{children}</div>
+        <div className="flex h-full w-full flex-col overflow-y-auto">{children}</div>
       </div>
     </main>
   )
