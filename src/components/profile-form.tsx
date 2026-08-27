@@ -12,6 +12,7 @@ import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { useAuth } from '@/contexts/auth-context'
 import { BRAZILIAN_STATES } from '@/lib/brazilian-states'
+import { getInitials } from '@/lib/get-initials'
 import { formatCurrency, maskCep, maskCpf, maskCurrency, maskPhone } from '@/lib/masks'
 import {
   createProfileSchema,
@@ -200,12 +201,7 @@ export function ProfileForm() {
     }
   }
 
-  const initials = (state.status === 'authenticated' ? state.user.name : '')
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('')
+  const initials = getInitials(state.status === 'authenticated' ? state.user.name : '')
 
   return (
     <div className="flex flex-col gap-6">

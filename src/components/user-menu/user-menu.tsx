@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { useAuth } from '@/contexts/auth-context'
 import { useRouter } from '@/i18n/navigation'
+import { getInitials } from '@/lib/get-initials'
 import { getAvatarSrc } from '@/services/users-service'
 import { LocaleMenuItem } from './locale-menu-item'
 import { LogoutMenuItem } from './logout-menu-item'
@@ -25,12 +26,7 @@ export function UserMenu() {
 
   if (state.status !== 'authenticated') return null
 
-  const initials = state.user.name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join('')
+  const initials = getInitials(state.user.name)
 
   return (
     <DropdownMenu>
