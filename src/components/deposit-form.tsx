@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,14 +9,13 @@ import { FormField } from '@/components/form-field'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { maskCardExpiry, maskCardNumber, maskCurrency } from '@/lib/masks'
+import { toast } from '@/lib/toast-store'
 import {
   createDepositSchema,
   type DepositFormInput,
   type DepositFormOutput,
 } from '@/lib/validations/deposit-schema'
 import { deposit, WalletServiceError } from '@/services/wallet-service'
-
-type SubmitState = { status: 'idle' } | { status: 'error'; message: string }
 
 // Convenience only for local development — pre-fills Stripe's test card so
 // there's nothing to type while testing the deposit flow. Never filled in
@@ -29,8 +28,6 @@ const CARD_DEFAULT_VALUES: Pick<DepositFormInput, 'cardNumber' | 'cardCvv' | 'ca
 export function DepositForm({ onSuccess }: { onSuccess: () => void }) {
   const translate = useTranslations('DepositForm')
   const translateErrors = useTranslations('DepositForm.errors')
-
-  const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
 
   const depositSchema = useMemo(() => createDepositSchema(translateErrors), [translateErrors])
 
@@ -47,8 +44,6 @@ export function DepositForm({ onSuccess }: { onSuccess: () => void }) {
   })
 
   async function onSubmit(data: DepositFormOutput) {
-    setSubmitState({ status: 'idle' })
-
     try {
       await deposit(data.amount, {
         cardNumber: data.cardNumber,
@@ -63,7 +58,7 @@ export function DepositForm({ onSuccess }: { onSuccess: () => void }) {
           ? translateErrors(error.code)
           : translate('genericError')
 
-      setSubmitState({ status: 'error', message })
+      toast.error(message)
     }
   }
 
@@ -128,10 +123,6 @@ export function DepositForm({ onSuccess }: { onSuccess: () => void }) {
           />
         </FormField>
       </div>
-
-      {submitState.status === 'error' && (
-        <p className="text-sm text-red-600 dark:text-red-400">{submitState.message}</p>
-      )}
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? translate('submit.submitting') : translate('submit.idle')}

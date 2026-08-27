@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl'
 
 import { Card } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/masks'
+import { toast } from '@/lib/toast-store'
 import { getWallet } from '@/services/wallet-service'
 
 export function WalletBalanceCard({ refreshKey = 0 }: { refreshKey?: number }) {
@@ -14,8 +15,11 @@ export function WalletBalanceCard({ refreshKey = 0 }: { refreshKey?: number }) {
   useEffect(() => {
     getWallet()
       .then((wallet) => setBalance(wallet.balance))
-      .catch(() => setBalance(null))
-  }, [refreshKey])
+      .catch(() => {
+        setBalance(null)
+        toast.error(translate('balance.loadError'))
+      })
+  }, [refreshKey, translate])
 
   return (
     <Card>

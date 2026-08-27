@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAuth } from '@/contexts/auth-context'
 import { useRouter } from '@/i18n/navigation'
+import { toast } from '@/lib/toast-store'
 import {
   createLoginSchema,
   type LoginFormInput,
@@ -17,16 +18,12 @@ import {
 } from '@/lib/validations/login-schema'
 import { LoginServiceError } from '@/services/login-service'
 
-type SubmitState = { status: 'idle' } | { status: 'error'; message: string }
-
 export function LoginForm() {
   const translate = useTranslations('LoginForm')
   const translateErrors = useTranslations('LoginForm.errors')
   const translateSharedErrors = useTranslations('FormErrors')
   const { login } = useAuth()
   const router = useRouter()
-
-  const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
 
   const loginSchema = useMemo(
     () => createLoginSchema(translateErrors, translateSharedErrors),
@@ -44,8 +41,6 @@ export function LoginForm() {
   })
 
   async function onSubmit(data: LoginFormOutput) {
-    setSubmitState({ status: 'idle' })
-
     try {
       await login(data)
       router.push('/dashboard')
@@ -55,7 +50,7 @@ export function LoginForm() {
           ? translateErrors(error.code)
           : translate('genericError')
 
-      setSubmitState({ status: 'error', message })
+      toast.error(message)
     }
   }
 
@@ -77,10 +72,6 @@ export function LoginForm() {
           {...register('password')}
         />
       </FormField>
-
-      {submitState.status === 'error' && (
-        <p className="text-sm text-red-600 dark:text-red-400">{submitState.message}</p>
-      )}
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? translate('submit.submitting') : translate('submit.idle')}

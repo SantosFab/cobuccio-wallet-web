@@ -7,6 +7,7 @@ import { ThemeProvider } from 'next-themes'
 import { GuestHeaderControls } from '@/components/guest-header-controls'
 import { HeaderBrandLink } from '@/components/header-brand-link'
 import { HeaderPageTitle } from '@/components/header-page-title'
+import { Toaster } from '@/components/toaster'
 import { UserMenu } from '@/components/user-menu/user-menu'
 import { AuthProvider } from '@/contexts/auth-context'
 import { routing } from '@/i18n/routing'
@@ -68,6 +69,7 @@ export default async function RootLayout({ children, params }: Props) {
                 </div>
               </header>
               {children}
+              <Toaster />
             </AuthProvider>
           </NextIntlClientProvider>
         </ThemeProvider>

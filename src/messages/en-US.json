@@ -3,7 +3,8 @@
     "welcome": "Welcome, {name}!",
     "logout": "Log out",
     "balance": {
-      "label": "Available balance"
+      "label": "Available balance",
+      "loadError": "Could not load the balance"
     },
     "sections": {
       "balance": "Balance",
@@ -102,6 +103,7 @@
   "WalletTransactionList": {
     "empty": "No transactions yet.",
     "loadingMore": "Loading more…",
+    "loadError": "Could not load the transaction history",
     "reversedTag": "reversed",
     "types": {
       "deposit": "Deposit",

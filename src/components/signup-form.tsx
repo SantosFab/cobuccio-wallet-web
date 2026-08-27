@@ -13,6 +13,7 @@ import { useAuth } from '@/contexts/auth-context'
 import { useRouter } from '@/i18n/navigation'
 import { BRAZILIAN_STATES } from '@/lib/brazilian-states'
 import { maskCep, maskCpf, maskCurrency, maskPhone } from '@/lib/masks'
+import { toast } from '@/lib/toast-store'
 import {
   createSignupSchema,
   type SignupFormInput,
@@ -20,8 +21,6 @@ import {
 } from '@/lib/validations/signup-schema'
 import { CepNotFoundError, lookupAddressByCep } from '@/services/cep-service'
 import { signup, SignupServiceError } from '@/services/signup-service'
-
-type SubmitState = { status: 'idle' } | { status: 'error'; message: string }
 
 type AddressLookupStatus = 'idle' | 'loading' | 'not-found' | 'error'
 
@@ -33,7 +32,6 @@ export function SignupForm() {
   const { login } = useAuth()
   const router = useRouter()
 
-  const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
   const [addressLookupStatus, setAddressLookupStatus] = useState<AddressLookupStatus>('idle')
   const latestZipCodeLookupRef = useRef('')
 
@@ -46,6 +44,7 @@ export function SignupForm() {
     register,
     handleSubmit,
     setValue,
+    setError,
     trigger,
     formState: { errors, isSubmitting },
   } = useForm<SignupFormInput, unknown, SignupFormOutput>({
@@ -72,19 +71,19 @@ export function SignupForm() {
   })
 
   async function onSubmit(data: SignupFormOutput) {
-    setSubmitState({ status: 'idle' })
-
     try {
       await signup(data)
     } catch (error) {
-      const message =
-        error instanceof SignupServiceError
-          ? error.code === 'emailAlreadyRegistered'
-            ? translateSharedErrors('emailAlreadyRegistered')
-            : translateErrors('cpfAlreadyRegistered')
-          : translate('genericError')
+      if (error instanceof SignupServiceError) {
+        if (error.code === 'emailAlreadyRegistered') {
+          setError('email', { message: translateSharedErrors('emailAlreadyRegistered') })
+        } else {
+          setError('cpf', { message: translateErrors('cpfAlreadyRegistered') })
+        }
+        return
+      }
 
-      setSubmitState({ status: 'error', message })
+      toast.error(translate('genericError'))
       return
     }
 
@@ -362,10 +361,6 @@ export function SignupForm() {
           />
         </FormField>
       </fieldset>
-
-      {submitState.status === 'error' && (
-        <p className="text-sm text-red-600 dark:text-red-400">{submitState.message}</p>
-      )}
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? translate('submit.submitting') : translate('submit.idle')}

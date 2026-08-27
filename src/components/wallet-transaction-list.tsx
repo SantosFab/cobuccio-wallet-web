@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/masks'
+import { toast } from '@/lib/toast-store'
 import {
   listTransactions,
   reverseTransaction,
@@ -29,7 +30,6 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
   const [hasMore, setHasMore] = useState(true)
   const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [reversingId, setReversingId] = useState<string | null>(null)
-  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   const isFetchingRef = useRef(false)
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -45,11 +45,12 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
       .catch(() => {
         setTransactions([])
         setHasMore(false)
+        toast.error(translate('loadError'))
       })
       .finally(() => {
         isFetchingRef.current = false
       })
-  }, [refreshKey])
+  }, [refreshKey, translate])
 
   // The list lives inside a bounded, scrollable container (see the JSX
   // below — it grows to fill the page down to the footer, never beyond)
@@ -76,7 +77,10 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
             setTransactions((current) => [...current, ...page])
             setHasMore(page.length === PAGE_SIZE)
           })
-          .catch(() => setHasMore(false))
+          .catch(() => {
+            setHasMore(false)
+            toast.error(translate('loadError'))
+          })
           .finally(() => {
             isFetchingRef.current = false
             setIsLoadingMore(false)
@@ -87,21 +91,20 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
 
     observer.observe(sentinel)
     return () => observer.disconnect()
-  }, [transactions.length, hasMore])
+  }, [transactions.length, hasMore, translate])
 
   async function handleReverse(transactionId: string) {
-    setErrorMessage(null)
     setReversingId(transactionId)
 
     try {
       await reverseTransaction(transactionId)
       onReversed()
     } catch (error) {
-      setErrorMessage(
+      const message =
         error instanceof WalletServiceError
           ? translateErrors(error.code)
-          : translate('genericError'),
-      )
+          : translate('genericError')
+      toast.error(message)
     } finally {
       setReversingId(null)
     }
@@ -113,8 +116,6 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
 
   return (
     <div ref={containerRef} className="flex min-h-64 flex-1 flex-col gap-3 overflow-y-auto pr-1">
-      {errorMessage && <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>}
-
       {transactions.map((transaction, index) => {
         // Deposits only involve one person, so the original depositor
         // reverses them instantly. For transfers, only the recipient may

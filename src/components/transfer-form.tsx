@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,6 +9,7 @@ import { FormField } from '@/components/form-field'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { maskCurrency } from '@/lib/masks'
+import { toast } from '@/lib/toast-store'
 import {
   createTransferSchema,
   type TransferFormInput,
@@ -16,13 +17,9 @@ import {
 } from '@/lib/validations/transfer-schema'
 import { transfer, WalletServiceError } from '@/services/wallet-service'
 
-type SubmitState = { status: 'idle' } | { status: 'error'; message: string }
-
 export function TransferForm({ onSuccess }: { onSuccess: () => void }) {
   const translate = useTranslations('TransferForm')
   const translateErrors = useTranslations('TransferForm.errors')
-
-  const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
 
   const transferSchema = useMemo(() => createTransferSchema(translateErrors), [translateErrors])
 
@@ -39,8 +36,6 @@ export function TransferForm({ onSuccess }: { onSuccess: () => void }) {
   })
 
   async function onSubmit(data: TransferFormOutput) {
-    setSubmitState({ status: 'idle' })
-
     try {
       await transfer(data.recipientIdentifier, data.amount)
       reset()
@@ -51,7 +46,7 @@ export function TransferForm({ onSuccess }: { onSuccess: () => void }) {
           ? translateErrors(error.code)
           : translate('genericError')
 
-      setSubmitState({ status: 'error', message })
+      toast.error(message)
     }
   }
 
@@ -83,10 +78,6 @@ export function TransferForm({ onSuccess }: { onSuccess: () => void }) {
           })}
         />
       </FormField>
-
-      {submitState.status === 'error' && (
-        <p className="text-sm text-red-600 dark:text-red-400">{submitState.message}</p>
-      )}
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? translate('submit.submitting') : translate('submit.idle')}

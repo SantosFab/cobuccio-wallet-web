@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -8,6 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { FormField } from '@/components/form-field'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { toast } from '@/lib/toast-store'
 import {
   createChangePasswordSchema,
   type ChangePasswordFormInput,
@@ -15,13 +16,9 @@ import {
 } from '@/lib/validations/change-password-schema'
 import { changeMyPassword, UsersServiceError } from '@/services/users-service'
 
-type SubmitState = { status: 'idle' } | { status: 'error'; message: string } | { status: 'success' }
-
 export function ChangePasswordForm() {
   const translate = useTranslations('ChangePasswordForm')
   const translateErrors = useTranslations('ChangePasswordForm.errors')
-
-  const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
 
   const changePasswordSchema = useMemo(
     () => createChangePasswordSchema(translateErrors),
@@ -31,6 +28,7 @@ export function ChangePasswordForm() {
   const {
     register,
     handleSubmit,
+    setError,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<ChangePasswordFormInput, unknown, ChangePasswordFormOutput>({
@@ -40,18 +38,16 @@ export function ChangePasswordForm() {
   })
 
   async function onSubmit(data: ChangePasswordFormOutput) {
-    setSubmitState({ status: 'idle' })
-
     try {
       await changeMyPassword(data)
       reset()
-      setSubmitState({ status: 'success' })
+      toast.success(translate('success'))
     } catch (error) {
-      const message =
-        error instanceof UsersServiceError && error.code === 'invalidCurrentPassword'
-          ? translateErrors('invalidCurrentPassword')
-          : translate('genericError')
-      setSubmitState({ status: 'error', message })
+      if (error instanceof UsersServiceError && error.code === 'invalidCurrentPassword') {
+        setError('currentPassword', { message: translateErrors('invalidCurrentPassword') })
+        return
+      }
+      toast.error(translate('genericError'))
     }
   }
 
@@ -105,13 +101,6 @@ export function ChangePasswordForm() {
             />
           </FormField>
         </div>
-
-        {submitState.status === 'error' && (
-          <p className="text-sm text-red-600 dark:text-red-400">{submitState.message}</p>
-        )}
-        {submitState.status === 'success' && (
-          <p className="text-sm text-green-600 dark:text-green-400">{translate('success')}</p>
-        )}
 
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting ? translate('submit.submitting') : translate('submit.idle')}

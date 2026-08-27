@@ -14,6 +14,7 @@ import { useAuth } from '@/contexts/auth-context'
 import { BRAZILIAN_STATES } from '@/lib/brazilian-states'
 import { getInitials } from '@/lib/get-initials'
 import { formatCurrency, maskCep, maskCpf, maskCurrency, maskPhone } from '@/lib/masks'
+import { toast } from '@/lib/toast-store'
 import {
   createProfileSchema,
   type ProfileFormInput,
@@ -36,12 +37,7 @@ const ALLOWED_AVATAR_MIME_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 const MAX_AVATAR_SIZE_BYTES = 2 * 1024 * 1024
 
 type LoadState = { status: 'loading' } | { status: 'loaded' } | { status: 'error' }
-type SubmitState = { status: 'idle' } | { status: 'error'; message: string } | { status: 'success' }
-type AvatarActionState =
-  | { status: 'idle' }
-  | { status: 'uploading' }
-  | { status: 'removing' }
-  | { status: 'error'; message: string }
+type AvatarActionState = 'idle' | 'uploading' | 'removing'
 
 // name/cpf are shown but never submitted — the API has no way to change
 // them, so they don't belong in the editable react-hook-form state.
@@ -77,10 +73,7 @@ export function ProfileForm() {
   const { state, updateUser } = useAuth()
 
   const [loadState, setLoadState] = useState<LoadState>({ status: 'loading' })
-  const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
-  const [avatarActionState, setAvatarActionState] = useState<AvatarActionState>({
-    status: 'idle',
-  })
+  const [avatarActionState, setAvatarActionState] = useState<AvatarActionState>('idle')
   const [readOnlyInfo, setReadOnlyInfo] = useState<ReadOnlyInfo | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -90,6 +83,7 @@ export function ProfileForm() {
     register,
     handleSubmit,
     setValue,
+    setError,
     reset,
     formState: { errors, isSubmitting, isDirty },
   } = useForm<ProfileFormInput, unknown, ProfileFormOutput>({
@@ -123,17 +117,17 @@ export function ProfileForm() {
         setLoadState({ status: 'loaded' })
       })
       .catch(() => {
-        if (!cancelled) setLoadState({ status: 'error' })
+        if (cancelled) return
+        setLoadState({ status: 'error' })
+        toast.error(translate('genericError'))
       })
 
     return () => {
       cancelled = true
     }
-  }, [reset])
+  }, [reset, translate])
 
   async function onSubmit(data: ProfileFormOutput) {
-    setSubmitState({ status: 'idle' })
-
     try {
       const updated = await updateMyProfile({
         email: data.email,
@@ -154,13 +148,13 @@ export function ProfileForm() {
       // (like the initial load), not the raw zod output `data` — the
       // inputs display masked values, not the transformed ones.
       reset(toFormValues(updated))
-      setSubmitState({ status: 'success' })
+      toast.success(translate('success'))
     } catch (error) {
-      const message =
-        error instanceof UsersServiceError && error.code === 'emailAlreadyRegistered'
-          ? translateErrors('emailAlreadyRegistered')
-          : translate('genericError')
-      setSubmitState({ status: 'error', message })
+      if (error instanceof UsersServiceError && error.code === 'emailAlreadyRegistered') {
+        setError('email', { message: translateErrors('emailAlreadyRegistered') })
+        return
+      }
+      toast.error(translate('genericError'))
     }
   }
 
@@ -171,15 +165,15 @@ export function ProfileForm() {
     if (!file) return
 
     if (!ALLOWED_AVATAR_MIME_TYPES.includes(file.type)) {
-      setAvatarActionState({ status: 'error', message: translate('avatar.unsupportedFileType') })
+      toast.error(translate('avatar.unsupportedFileType'))
       return
     }
     if (file.size > MAX_AVATAR_SIZE_BYTES) {
-      setAvatarActionState({ status: 'error', message: translate('avatar.fileTooLarge') })
+      toast.error(translate('avatar.fileTooLarge'))
       return
     }
 
-    setAvatarActionState({ status: 'uploading' })
+    setAvatarActionState('uploading')
 
     try {
       const updated = await uploadMyAvatar(file)
@@ -189,18 +183,19 @@ export function ProfileForm() {
         email: updated.email,
         avatarUrl: updated.avatarUrl,
       })
-      setAvatarActionState({ status: 'idle' })
     } catch (error) {
       const message =
         error instanceof UsersServiceError && error.code === 'unsupportedFileType'
           ? translate('avatar.unsupportedFileType')
           : translate('avatar.error')
-      setAvatarActionState({ status: 'error', message })
+      toast.error(message)
+    } finally {
+      setAvatarActionState('idle')
     }
   }
 
   async function handleAvatarRemove() {
-    setAvatarActionState({ status: 'removing' })
+    setAvatarActionState('removing')
 
     try {
       const updated = await removeMyAvatar()
@@ -210,9 +205,10 @@ export function ProfileForm() {
         email: updated.email,
         avatarUrl: updated.avatarUrl,
       })
-      setAvatarActionState({ status: 'idle' })
     } catch {
-      setAvatarActionState({ status: 'error', message: translate('avatar.removeError') })
+      toast.error(translate('avatar.removeError'))
+    } finally {
+      setAvatarActionState('idle')
     }
   }
 
@@ -241,10 +237,10 @@ export function ProfileForm() {
               type="button"
               variant="outline"
               size="sm"
-              disabled={avatarActionState.status === 'uploading' || avatarActionState.status === 'removing'}
+              disabled={avatarActionState === 'uploading' || avatarActionState === 'removing'}
               onClick={() => fileInputRef.current?.click()}
             >
-              {avatarActionState.status === 'uploading'
+              {avatarActionState === 'uploading'
                 ? translate('avatar.uploading')
                 : translate('avatar.upload')}
             </Button>
@@ -253,26 +249,17 @@ export function ProfileForm() {
                 type="button"
                 variant="outline"
                 size="sm"
-                disabled={avatarActionState.status === 'uploading' || avatarActionState.status === 'removing'}
+                disabled={avatarActionState === 'uploading' || avatarActionState === 'removing'}
                 onClick={handleAvatarRemove}
               >
-                {avatarActionState.status === 'removing'
+                {avatarActionState === 'removing'
                   ? translate('avatar.removing')
                   : translate('avatar.remove')}
               </Button>
             )}
           </div>
-          {avatarActionState.status === 'error' && (
-            <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-              {avatarActionState.message}
-            </p>
-          )}
         </div>
       </div>
-
-      {loadState.status === 'error' && (
-        <p className="text-sm text-red-600 dark:text-red-400">{translate('genericError')}</p>
-      )}
 
       {loadState.status !== 'error' && (
         <form
@@ -455,13 +442,6 @@ export function ProfileForm() {
               />
             </FormField>
           </div>
-
-          {submitState.status === 'error' && (
-            <p className="text-sm text-red-600 dark:text-red-400">{submitState.message}</p>
-          )}
-          {submitState.status === 'success' && (
-            <p className="text-sm text-green-600 dark:text-green-400">{translate('success')}</p>
-          )}
 
           <Button
             type="submit"

@@ -3,7 +3,8 @@
     "welcome": "Bem-vindo, {name}!",
     "logout": "Sair",
     "balance": {
-      "label": "Saldo disponível"
+      "label": "Saldo disponível",
+      "loadError": "Não foi possível carregar o saldo"
     },
     "sections": {
       "balance": "Saldo",
@@ -102,6 +103,7 @@
   "WalletTransactionList": {
     "empty": "Nenhuma movimentação ainda.",
     "loadingMore": "Carregando mais…",
+    "loadError": "Não foi possível carregar o histórico",
     "reversedTag": "revertida",
     "types": {
       "deposit": "Depósito",
