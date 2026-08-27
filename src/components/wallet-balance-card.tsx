@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card'
 import { formatCurrency } from '@/lib/masks'
 import { getWallet } from '@/services/wallet-service'
 
-export function WalletBalanceCard() {
+export function WalletBalanceCard({ refreshKey = 0 }: { refreshKey?: number }) {
   const translate = useTranslations('DashboardPage')
   const [balance, setBalance] = useState<string | null>(null)
 
@@ -15,7 +15,7 @@ export function WalletBalanceCard() {
     getWallet()
       .then((wallet) => setBalance(wallet.balance))
       .catch(() => setBalance(null))
-  }, [])
+  }, [refreshKey])
 
   return (
     <Card>

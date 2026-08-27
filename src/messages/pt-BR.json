@@ -8,16 +8,14 @@
     "sections": {
       "balance": "Saldo",
       "deposit": "Depositar",
-      "transfer": "Transferir",
       "history": "Histórico",
+      "transfer": "Transferir",
       "profile": "Perfil"
     }
   },
   "DashboardSidebar": {
     "balance": "Saldo",
-    "deposit": "Depositar",
     "transfer": "Transferir",
-    "history": "Histórico",
     "profile": "Perfil"
   },
   "FormErrors": {
@@ -103,6 +101,7 @@
   },
   "WalletTransactionList": {
     "empty": "Nenhuma movimentação ainda.",
+    "loadingMore": "Carregando mais…",
     "reversedTag": "revertida",
     "types": {
       "deposit": "Depósito",

@@ -87,7 +87,8 @@ export const transfer = (recipientIdentifier: string, amount: number) =>
     body: JSON.stringify({ recipientIdentifier, amount }),
   })
 
-export const listTransactions = () => request<WalletTransaction[]>('/wallets/transactions')
+export const listTransactions = (params: { limit: number; offset: number }) =>
+  request<WalletTransaction[]>(`/wallets/transactions?limit=${params.limit}&offset=${params.offset}`)
 
 export const reverseTransaction = (transactionId: string) =>
   request<WalletTransaction>(`/wallets/transactions/${transactionId}/reversal`, {

@@ -8,16 +8,14 @@
     "sections": {
       "balance": "Balance",
       "deposit": "Deposit",
-      "transfer": "Transfer",
       "history": "History",
+      "transfer": "Transfer",
       "profile": "Profile"
     }
   },
   "DashboardSidebar": {
     "balance": "Balance",
-    "deposit": "Deposit",
     "transfer": "Transfer",
-    "history": "History",
     "profile": "Profile"
   },
   "FormErrors": {
@@ -103,6 +101,7 @@
   },
   "WalletTransactionList": {
     "empty": "No transactions yet.",
+    "loadingMore": "Loading more…",
     "reversedTag": "reversed",
     "types": {
       "deposit": "Deposit",

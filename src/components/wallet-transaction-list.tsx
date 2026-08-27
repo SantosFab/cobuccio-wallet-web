@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslations } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
@@ -13,6 +13,8 @@ import {
   type WalletTransaction,
 } from '@/services/wallet-service'
 
+const PAGE_SIZE = 5
+
 interface Props {
   currentUserId: string
   refreshKey: number
@@ -24,14 +26,68 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
   const translateErrors = useTranslations('WalletTransactionList.errors')
 
   const [transactions, setTransactions] = useState<WalletTransaction[]>([])
+  const [hasMore, setHasMore] = useState(true)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const [reversingId, setReversingId] = useState<string | null>(null)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  const isFetchingRef = useRef(false)
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const sentinelRef = useRef<HTMLDivElement | null>(null)
+
   useEffect(() => {
-    listTransactions()
-      .then(setTransactions)
-      .catch(() => setTransactions([]))
+    isFetchingRef.current = true
+    listTransactions({ limit: PAGE_SIZE, offset: 0 })
+      .then((page) => {
+        setTransactions(page)
+        setHasMore(page.length === PAGE_SIZE)
+      })
+      .catch(() => {
+        setTransactions([])
+        setHasMore(false)
+      })
+      .finally(() => {
+        isFetchingRef.current = false
+      })
   }, [refreshKey])
+
+  // The list lives inside a bounded, scrollable container (see the JSX
+  // below — it grows to fill the page down to the footer, never beyond)
+  // instead of growing the whole page — otherwise the sentinel below would
+  // already sit inside the viewport on mount and this effect would keep
+  // fetching forever without the user ever scrolling. Scoping the
+  // observer's `root` to that container means the 4th item of the most
+  // recently loaded batch of 5 only intersects once the user actually
+  // scrolls it into view, which is when the next page is fetched.
+  useEffect(() => {
+    const container = containerRef.current
+    const sentinel = sentinelRef.current
+    if (!container || !sentinel || !hasMore) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting || isFetchingRef.current) return
+
+        isFetchingRef.current = true
+        setIsLoadingMore(true)
+
+        listTransactions({ limit: PAGE_SIZE, offset: transactions.length })
+          .then((page) => {
+            setTransactions((current) => [...current, ...page])
+            setHasMore(page.length === PAGE_SIZE)
+          })
+          .catch(() => setHasMore(false))
+          .finally(() => {
+            isFetchingRef.current = false
+            setIsLoadingMore(false)
+          })
+      },
+      { root: container, threshold: 0.5 },
+    )
+
+    observer.observe(sentinel)
+    return () => observer.disconnect()
+  }, [transactions.length, hasMore])
 
   async function handleReverse(transactionId: string) {
     setErrorMessage(null)
@@ -56,10 +112,10 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
   }
 
   return (
-    <div className="flex flex-col gap-3">
+    <div ref={containerRef} className="flex min-h-64 flex-1 flex-col gap-3 overflow-y-auto pr-1">
       {errorMessage && <p className="text-sm text-red-600 dark:text-red-400">{errorMessage}</p>}
 
-      {transactions.map((transaction) => {
+      {transactions.map((transaction, index) => {
         // Deposits only involve one person, so the original depositor
         // reverses them instantly. For transfers, only the recipient may
         // reverse it — `direction: 'credit'` means the viewer received
@@ -72,7 +128,12 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
             : transaction.type === 'transfer' && transaction.direction === 'credit')
 
         return (
-          <Card key={transaction.id} padding="sm" className="flex items-center justify-between gap-4">
+          <Card
+            key={transaction.id}
+            ref={index === transactions.length - 2 ? sentinelRef : undefined}
+            padding="sm"
+            className="flex items-center justify-between gap-4"
+          >
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-medium">
                 {translate(`types.${transaction.type}`)}
@@ -111,6 +172,8 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
           </Card>
         )
       })}
+
+      {isLoadingMore && <p className="text-sm text-neutral-500">{translate('loadingMore')}</p>}
     </div>
   )
 }

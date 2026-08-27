@@ -55,7 +55,7 @@ export default async function RootLayout({ children, params }: Props) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>
             <AuthProvider>
-              <header className="flex bg-navy text-white">
+              <header className="flex h-16 bg-navy text-white">
                 <div className="flex shrink-0 items-center px-4 py-3 sm:w-56 sm:border-r sm:border-white/15">
                   <HeaderBrandLink />
                 </div>
