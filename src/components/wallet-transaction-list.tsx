@@ -99,6 +99,7 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
     try {
       await reverseTransaction(transactionId)
       onReversed()
+      toast.success(translate('reverse.success'))
     } catch (error) {
       const message =
         error instanceof WalletServiceError

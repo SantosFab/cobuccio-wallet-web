@@ -49,6 +49,7 @@
       "idle": "Depositar",
       "submitting": "Depositando..."
     },
+    "success": "Depósito realizado com sucesso",
     "genericError": "Não foi possível depositar",
     "errors": {
       "amountRequired": "Informe o valor",
@@ -112,7 +113,8 @@
     },
     "reverse": {
       "button": "Reverter",
-      "returnButton": "Devolver dinheiro"
+      "returnButton": "Devolver dinheiro",
+      "success": "Transação revertida com sucesso"
     },
     "genericError": "Não foi possível reverter",
     "errors": {

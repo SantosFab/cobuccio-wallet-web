@@ -49,6 +49,7 @@
       "idle": "Deposit",
       "submitting": "Depositing..."
     },
+    "success": "Deposit completed successfully",
     "genericError": "Could not deposit",
     "errors": {
       "amountRequired": "Enter the amount",
@@ -112,7 +113,8 @@
     },
     "reverse": {
       "button": "Reverse",
-      "returnButton": "Return money"
+      "returnButton": "Return money",
+      "success": "Transaction reversed successfully"
     },
     "genericError": "Could not reverse",
     "errors": {

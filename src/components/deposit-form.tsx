@@ -52,6 +52,7 @@ export function DepositForm({ onSuccess }: { onSuccess: () => void }) {
       })
       reset()
       onSuccess()
+      toast.success(translate('success'))
     } catch (error) {
       const message =
         error instanceof WalletServiceError
