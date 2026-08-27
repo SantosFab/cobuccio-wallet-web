@@ -6,6 +6,7 @@ import { ThemeProvider } from 'next-themes'
 
 import { GuestHeaderControls } from '@/components/guest-header-controls'
 import { HeaderBrandLink } from '@/components/header-brand-link'
+import { HeaderPageTitle } from '@/components/header-page-title'
 import { UserMenu } from '@/components/user-menu/user-menu'
 import { AuthProvider } from '@/contexts/auth-context'
 import { routing } from '@/i18n/routing'
@@ -54,11 +55,16 @@ export default async function RootLayout({ children, params }: Props) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>
             <AuthProvider>
-              <header className="flex items-center justify-between gap-4 bg-navy px-4 py-3 text-white">
-                <HeaderBrandLink />
-                <div className="flex items-center gap-2">
-                  <GuestHeaderControls />
-                  <UserMenu />
+              <header className="flex bg-navy text-white">
+                <div className="flex shrink-0 items-center px-4 py-3 sm:w-56 sm:border-r sm:border-white/15">
+                  <HeaderBrandLink />
+                </div>
+                <div className="flex flex-1 items-center gap-4 px-4 py-3">
+                  <HeaderPageTitle />
+                  <div className="ml-auto flex items-center gap-2">
+                    <GuestHeaderControls />
+                    <UserMenu />
+                  </div>
                 </div>
               </header>
               {children}

@@ -3,15 +3,8 @@
 import { useTranslations } from 'next-intl'
 
 import { Link, usePathname } from '@/i18n/navigation'
+import { DASHBOARD_NAV_ITEMS } from '@/lib/dashboard-nav-items'
 import { cn } from '@/lib/utils'
-
-const NAV_ITEMS = [
-  { href: '/dashboard', key: 'balance' },
-  { href: '/dashboard/deposit', key: 'deposit' },
-  { href: '/dashboard/transfer', key: 'transfer' },
-  { href: '/dashboard/history', key: 'history' },
-  { href: '/dashboard/profile', key: 'profile' },
-] as const
 
 export function DashboardSidebar() {
   const translate = useTranslations('DashboardSidebar')
@@ -19,7 +12,7 @@ export function DashboardSidebar() {
 
   return (
     <nav className="flex w-full flex-row gap-1 sm:flex-col">
-      {NAV_ITEMS.map((item) => {
+      {DASHBOARD_NAV_ITEMS.map((item) => {
         const isActive = pathname === item.href
 
         return (
