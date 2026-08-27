@@ -34,7 +34,7 @@ export function UserMenu() {
         <button
           type="button"
           aria-label={translate('openMenu')}
-          className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          className="rounded-full p-0.5 outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 focus-visible:ring-offset-background"
         >
           <Avatar>
             <AvatarImage src={getAvatarSrc(state.user.avatarUrl)} alt="" />

@@ -23,8 +23,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <main className="flex h-[calc(100vh-4rem)] w-full flex-col sm:flex-row">
-      <aside className="flex flex-col gap-4 border-neutral-200 px-4 py-8 dark:border-neutral-800 sm:w-56 sm:shrink-0 sm:border-r">
+    <main className="flex h-[calc(100dvh-4rem)] w-full flex-col sm:flex-row">
+      <aside className="flex flex-col gap-3 border-neutral-200 px-4 py-4 dark:border-neutral-800 sm:w-56 sm:shrink-0 sm:gap-4 sm:border-r sm:py-8">
         <p className="text-sm text-neutral-500 dark:text-neutral-400">
           {translate('welcome', { name: state.user.name })}
         </p>

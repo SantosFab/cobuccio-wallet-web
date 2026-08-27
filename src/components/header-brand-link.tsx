@@ -12,7 +12,7 @@ export function HeaderBrandLink() {
       <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-gold font-serif text-sm text-gold">
         CW
       </span>
-      <span className="font-serif text-lg tracking-wide">Cobuccio Wallet</span>
+      <span className="hidden font-serif text-lg tracking-wide sm:inline">Cobuccio Wallet</span>
     </Link>
   )
 }

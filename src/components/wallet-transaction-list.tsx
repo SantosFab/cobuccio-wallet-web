@@ -132,10 +132,10 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
             key={transaction.id}
             ref={index === transactions.length - 2 ? sentinelRef : undefined}
             padding="sm"
-            className="flex items-center justify-between gap-4"
+            className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
           >
-            <div className="flex flex-col gap-0.5">
-              <span className="text-sm font-medium">
+            <div className="flex min-w-0 flex-col gap-0.5">
+              <span className="truncate text-sm font-medium">
                 {translate(`types.${transaction.type}`)}
                 {transaction.counterpartName ? ` · ${transaction.counterpartName}` : ''}
               </span>
@@ -145,7 +145,7 @@ export function WalletTransactionList({ currentUserId, refreshKey, onReversed }:
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-between gap-3 sm:justify-end">
               <span
                 className={
                   transaction.direction === 'credit'

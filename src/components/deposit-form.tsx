@@ -98,39 +98,35 @@ export function DepositForm({ onSuccess }: { onSuccess: () => void }) {
         />
       </FormField>
 
-      <div className="flex gap-4">
-        <div className="flex-1">
-          <FormField label={translate('fields.cardCvv')} htmlFor="deposit-card-cvv" error={errors.cardCvv?.message}>
-            <Input
-              id="deposit-card-cvv"
-              inputMode="numeric"
-              maxLength={3}
-              placeholder={translate('placeholders.cardCvv')}
-              aria-invalid={!!errors.cardCvv}
-              {...register('cardCvv')}
-            />
-          </FormField>
-        </div>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <FormField label={translate('fields.cardCvv')} htmlFor="deposit-card-cvv" error={errors.cardCvv?.message}>
+          <Input
+            id="deposit-card-cvv"
+            inputMode="numeric"
+            maxLength={3}
+            placeholder={translate('placeholders.cardCvv')}
+            aria-invalid={!!errors.cardCvv}
+            {...register('cardCvv')}
+          />
+        </FormField>
 
-        <div className="flex-1">
-          <FormField
-            label={translate('fields.cardExpiry')}
-            htmlFor="deposit-card-expiry"
-            error={errors.cardExpiry?.message}
-          >
-            <Input
-              id="deposit-card-expiry"
-              inputMode="numeric"
-              placeholder={translate('placeholders.cardExpiry')}
-              aria-invalid={!!errors.cardExpiry}
-              {...register('cardExpiry', {
-                onChange: (event) => {
-                  setValue('cardExpiry', maskCardExpiry(event.target.value), { shouldValidate: true })
-                },
-              })}
-            />
-          </FormField>
-        </div>
+        <FormField
+          label={translate('fields.cardExpiry')}
+          htmlFor="deposit-card-expiry"
+          error={errors.cardExpiry?.message}
+        >
+          <Input
+            id="deposit-card-expiry"
+            inputMode="numeric"
+            placeholder={translate('placeholders.cardExpiry')}
+            aria-invalid={!!errors.cardExpiry}
+            {...register('cardExpiry', {
+              onChange: (event) => {
+                setValue('cardExpiry', maskCardExpiry(event.target.value), { shouldValidate: true })
+              },
+            })}
+          />
+        </FormField>
       </div>
 
       {submitState.status === 'error' && (

@@ -56,10 +56,10 @@ export default async function RootLayout({ children, params }: Props) {
           <NextIntlClientProvider>
             <AuthProvider>
               <header className="flex h-16 bg-navy text-white">
-                <div className="flex shrink-0 items-center px-4 py-3 sm:w-56 sm:border-r sm:border-white/15">
+                <div className="flex shrink-0 items-center px-3 py-3 sm:w-56 sm:border-r sm:border-white/15 sm:px-4">
                   <HeaderBrandLink />
                 </div>
-                <div className="flex flex-1 items-center gap-4 px-4 py-3">
+                <div className="flex flex-1 items-center gap-2 px-3 py-3 sm:gap-4 sm:px-4">
                   <HeaderPageTitle />
                   <div className="ml-auto flex items-center gap-2">
                     <GuestHeaderControls />
