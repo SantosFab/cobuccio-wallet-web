@@ -29,13 +29,17 @@ type AddressLookupStatus = 'idle' | 'loading' | 'not-found' | 'error'
 export function SignupForm() {
   const translate = useTranslations('SignupForm')
   const translateErrors = useTranslations('SignupForm.errors')
+  const translateSharedErrors = useTranslations('FormErrors')
   const translateStates = useTranslations('States')
 
   const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
   const [addressLookupStatus, setAddressLookupStatus] = useState<AddressLookupStatus>('idle')
   const latestZipCodeLookupRef = useRef('')
 
-  const signupSchema = useMemo(() => createSignupSchema(translateErrors), [translateErrors])
+  const signupSchema = useMemo(
+    () => createSignupSchema(translateErrors, translateSharedErrors),
+    [translateErrors, translateSharedErrors],
+  )
 
   const {
     register,
@@ -75,7 +79,9 @@ export function SignupForm() {
     } catch (error) {
       const message =
         error instanceof SignupServiceError
-          ? translateErrors(error.code)
+          ? error.code === 'emailAlreadyRegistered'
+            ? translateSharedErrors('emailAlreadyRegistered')
+            : translateErrors('cpfAlreadyRegistered')
           : translate('genericError')
 
       setSubmitState({ status: 'error', message })

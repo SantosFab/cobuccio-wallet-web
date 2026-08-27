@@ -4,6 +4,7 @@ export interface LoginResponse {
   id: string
   name: string
   email: string
+  avatarUrl: string | null
 }
 
 export type LoginErrorCode = 'invalidCredentials' | 'tooManyAttempts'

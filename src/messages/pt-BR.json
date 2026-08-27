@@ -9,14 +9,29 @@
       "balance": "Saldo",
       "deposit": "Depositar",
       "transfer": "Transferir",
-      "history": "Histórico"
+      "history": "Histórico",
+      "profile": "Perfil"
     }
   },
   "DashboardSidebar": {
     "balance": "Saldo",
     "deposit": "Depositar",
     "transfer": "Transferir",
-    "history": "Histórico"
+    "history": "Histórico",
+    "profile": "Perfil"
+  },
+  "FormErrors": {
+    "emailInvalid": "E-mail inválido",
+    "phoneInvalid": "Telefone inválido",
+    "zipCodeInvalid": "CEP inválido",
+    "streetRequired": "Informe a rua",
+    "numberRequired": "Informe o número",
+    "neighborhoodRequired": "Informe o bairro",
+    "cityRequired": "Informe a cidade",
+    "stateInvalid": "UF inválida",
+    "monthlyIncomeRequired": "Informe sua renda mensal declarada",
+    "monthlyIncomeInvalid": "Informe uma renda mensal válida",
+    "emailAlreadyRegistered": "Este e-mail já está cadastrado"
   },
   "DepositForm": {
     "fields": {
@@ -127,7 +142,6 @@
     },
     "genericError": "Não foi possível entrar",
     "errors": {
-      "emailInvalid": "E-mail inválido",
       "passwordRequired": "Informe sua senha",
       "invalidCredentials": "E-mail ou senha inválidos",
       "tooManyAttempts": "Muitas tentativas. Aguarde um minuto e tente novamente."
@@ -183,21 +197,10 @@
     },
     "errors": {
       "nameRequired": "Informe seu nome completo",
-      "emailInvalid": "E-mail inválido",
       "cpfInvalid": "CPF inválido",
-      "phoneInvalid": "Telefone inválido",
-      "zipCodeInvalid": "CEP inválido",
-      "streetRequired": "Informe a rua",
-      "numberRequired": "Informe o número",
-      "neighborhoodRequired": "Informe o bairro",
-      "cityRequired": "Informe a cidade",
-      "stateInvalid": "UF inválida",
-      "monthlyIncomeRequired": "Informe sua renda mensal declarada",
-      "monthlyIncomeInvalid": "Informe uma renda mensal válida",
       "passwordTooShort": "A senha deve ter no mínimo 8 caracteres",
       "passwordWeak": "A senha deve ter letra maiúscula, minúscula e número",
       "passwordsDoNotMatch": "As senhas não coincidem",
-      "emailAlreadyRegistered": "Este e-mail já está cadastrado",
       "cpfAlreadyRegistered": "Este CPF já está cadastrado"
     }
   },
@@ -241,5 +244,50 @@
     "system": "Sistema",
     "current": "Tema atual: {theme}",
     "switchTo": "Mudar para o tema {theme}"
+  },
+  "UserMenu": {
+    "openMenu": "Abrir menu do usuário",
+    "profileLink": "Meu perfil",
+    "theme": "Tema",
+    "language": "Idioma",
+    "logout": "Sair"
+  },
+  "ProfileForm": {
+    "fields": {
+      "name": "Nome completo",
+      "cpf": "CPF",
+      "phone": "Telefone",
+      "email": "E-mail",
+      "monthlyIncome": "Renda mensal declarada",
+      "zipCode": "CEP",
+      "state": "UF",
+      "statePlaceholder": "Selecione",
+      "street": "Rua",
+      "number": "Número",
+      "complement": "Complemento (opcional)",
+      "neighborhood": "Bairro",
+      "city": "Cidade"
+    },
+    "placeholders": {
+      "phone": "(00) 00000-0000",
+      "monthlyIncome": "R$ 0,00",
+      "zipCode": "00000-000"
+    },
+    "avatar": {
+      "upload": "Trocar foto",
+      "uploading": "Enviando foto...",
+      "remove": "Remover foto",
+      "removing": "Removendo...",
+      "removeError": "Não foi possível remover a foto",
+      "error": "Não foi possível enviar a foto",
+      "unsupportedFileType": "Formato de arquivo não suportado",
+      "fileTooLarge": "Arquivo muito grande (máx. 2MB)"
+    },
+    "submit": {
+      "idle": "Salvar alterações",
+      "submitting": "Salvando..."
+    },
+    "success": "Perfil atualizado com sucesso",
+    "genericError": "Não foi possível atualizar o perfil"
   }
 }

@@ -2,6 +2,7 @@ export interface CurrentUser {
   id: string
   name: string
   email: string
+  avatarUrl: string | null
 }
 
 // Not authenticated is a normal outcome here, not an error — every page

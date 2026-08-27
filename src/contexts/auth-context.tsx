@@ -20,6 +20,7 @@ interface AuthContextValue {
   state: AuthState
   login: (payload: LoginFormOutput) => Promise<void>
   logout: () => Promise<void>
+  updateUser: (user: CurrentUser) => void
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null)
@@ -67,8 +68,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState({ status: 'unauthenticated' })
   }
 
+  function handleUpdateUser(user: CurrentUser) {
+    setState({ status: 'authenticated', user })
+  }
+
   return (
-    <AuthContext.Provider value={{ state, login: handleLogin, logout: handleLogout }}>
+    <AuthContext.Provider
+      value={{ state, login: handleLogin, logout: handleLogout, updateUser: handleUpdateUser }}
+    >
       {children}
     </AuthContext.Provider>
   )

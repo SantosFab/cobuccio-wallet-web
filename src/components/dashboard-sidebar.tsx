@@ -10,6 +10,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/deposit', key: 'deposit' },
   { href: '/dashboard/transfer', key: 'transfer' },
   { href: '/dashboard/history', key: 'history' },
+  { href: '/dashboard/profile', key: 'profile' },
 ] as const
 
 export function DashboardSidebar() {

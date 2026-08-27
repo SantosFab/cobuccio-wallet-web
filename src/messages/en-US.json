@@ -9,14 +9,29 @@
       "balance": "Balance",
       "deposit": "Deposit",
       "transfer": "Transfer",
-      "history": "History"
+      "history": "History",
+      "profile": "Profile"
     }
   },
   "DashboardSidebar": {
     "balance": "Balance",
     "deposit": "Deposit",
     "transfer": "Transfer",
-    "history": "History"
+    "history": "History",
+    "profile": "Profile"
+  },
+  "FormErrors": {
+    "emailInvalid": "Invalid email",
+    "phoneInvalid": "Invalid phone",
+    "zipCodeInvalid": "Invalid ZIP code",
+    "streetRequired": "Enter the street",
+    "numberRequired": "Enter the number",
+    "neighborhoodRequired": "Enter the neighborhood",
+    "cityRequired": "Enter the city",
+    "stateInvalid": "Invalid state",
+    "monthlyIncomeRequired": "Enter your declared monthly income",
+    "monthlyIncomeInvalid": "Enter a valid monthly income",
+    "emailAlreadyRegistered": "This email is already registered"
   },
   "DepositForm": {
     "fields": {
@@ -127,7 +142,6 @@
     },
     "genericError": "Could not log in",
     "errors": {
-      "emailInvalid": "Invalid email",
       "passwordRequired": "Enter your password",
       "invalidCredentials": "Invalid email or password",
       "tooManyAttempts": "Too many attempts. Wait a minute and try again."
@@ -183,21 +197,10 @@
     },
     "errors": {
       "nameRequired": "Enter your full name",
-      "emailInvalid": "Invalid email",
       "cpfInvalid": "Invalid CPF",
-      "phoneInvalid": "Invalid phone",
-      "zipCodeInvalid": "Invalid ZIP code",
-      "streetRequired": "Enter the street",
-      "numberRequired": "Enter the number",
-      "neighborhoodRequired": "Enter the neighborhood",
-      "cityRequired": "Enter the city",
-      "stateInvalid": "Invalid state",
-      "monthlyIncomeRequired": "Enter your declared monthly income",
-      "monthlyIncomeInvalid": "Enter a valid monthly income",
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordWeak": "Password must have an uppercase letter, a lowercase letter and a number",
       "passwordsDoNotMatch": "Passwords do not match",
-      "emailAlreadyRegistered": "This email is already registered",
       "cpfAlreadyRegistered": "This CPF is already registered"
     }
   },
@@ -241,5 +244,50 @@
     "system": "System",
     "current": "Current theme: {theme}",
     "switchTo": "Switch to {theme} theme"
+  },
+  "UserMenu": {
+    "openMenu": "Open user menu",
+    "profileLink": "My profile",
+    "theme": "Theme",
+    "language": "Language",
+    "logout": "Log out"
+  },
+  "ProfileForm": {
+    "fields": {
+      "name": "Full name",
+      "cpf": "CPF",
+      "phone": "Phone",
+      "email": "Email",
+      "monthlyIncome": "Declared monthly income",
+      "zipCode": "ZIP code",
+      "state": "State",
+      "statePlaceholder": "Select",
+      "street": "Street",
+      "number": "Number",
+      "complement": "Complement (optional)",
+      "neighborhood": "Neighborhood",
+      "city": "City"
+    },
+    "placeholders": {
+      "phone": "(00) 00000-0000",
+      "monthlyIncome": "$0.00",
+      "zipCode": "00000-000"
+    },
+    "avatar": {
+      "upload": "Change photo",
+      "uploading": "Uploading photo...",
+      "remove": "Remove photo",
+      "removing": "Removing...",
+      "removeError": "Could not remove the photo",
+      "error": "Could not upload the photo",
+      "unsupportedFileType": "Unsupported file type",
+      "fileTooLarge": "File is too large (max 2MB)"
+    },
+    "submit": {
+      "idle": "Save changes",
+      "submitting": "Saving..."
+    },
+    "success": "Profile updated successfully",
+    "genericError": "Could not update the profile"
   }
 }

@@ -4,9 +4,7 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { ThemeProvider } from 'next-themes'
 
-import { HeaderLogoutButton } from '@/components/header-logout-button'
-import { LocaleSwitcher } from '@/components/locale-switcher'
-import { ThemeToggle } from '@/components/theme-toggle'
+import { UserMenu } from '@/components/user-menu/user-menu'
 import { AuthProvider } from '@/contexts/auth-context'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
@@ -62,9 +60,7 @@ export default async function RootLayout({ children, params }: Props) {
                   <span className="font-serif text-lg tracking-wide">Cobuccio Wallet</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <ThemeToggle />
-                  <LocaleSwitcher />
-                  <HeaderLogoutButton />
+                  <UserMenu />
                 </div>
               </header>
               {children}

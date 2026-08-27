@@ -22,12 +22,16 @@ type SubmitState = { status: 'idle' } | { status: 'error'; message: string }
 export function LoginForm() {
   const translate = useTranslations('LoginForm')
   const translateErrors = useTranslations('LoginForm.errors')
+  const translateSharedErrors = useTranslations('FormErrors')
   const { login } = useAuth()
   const router = useRouter()
 
   const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
 
-  const loginSchema = useMemo(() => createLoginSchema(translateErrors), [translateErrors])
+  const loginSchema = useMemo(
+    () => createLoginSchema(translateErrors, translateSharedErrors),
+    [translateErrors, translateSharedErrors],
+  )
 
   const {
     register,

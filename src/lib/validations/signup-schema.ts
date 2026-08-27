@@ -4,46 +4,38 @@ import { z as zod } from 'zod'
 import { parseCurrencyToNumber } from '@/lib/masks'
 import { isValidCpf } from '@/lib/validators/cpf'
 import { isValidPhone } from '@/lib/validators/phone'
+import { createAddressSchema } from './address-schema'
+import type { SharedErrorsTranslator } from './shared-errors'
 
-const CEP_REGEX = /^\d{5}-\d{3}$/
-const UF_REGEX = /^[A-Z]{2}$/
 const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/
 
 type SignupErrorsTranslator = ReturnType<typeof useTranslations<'SignupForm.errors'>>
 
-export function createSignupSchema(translateErrors: SignupErrorsTranslator) {
-  const addressSchema = zod.object({
-    zipCode: zod
-      .string()
-      .regex(CEP_REGEX, { message: translateErrors('zipCodeInvalid') })
-      .transform((value) => value.replace(/\D/g, '')),
-    street: zod.string().min(1, { message: translateErrors('streetRequired') }),
-    number: zod.string().min(1, { message: translateErrors('numberRequired') }),
-    complement: zod.string().optional(),
-    neighborhood: zod.string().min(1, { message: translateErrors('neighborhoodRequired') }),
-    city: zod.string().min(1, { message: translateErrors('cityRequired') }),
-    state: zod.string().regex(UF_REGEX, { message: translateErrors('stateInvalid') }),
-  })
+export function createSignupSchema(
+  translateErrors: SignupErrorsTranslator,
+  translateSharedErrors: SharedErrorsTranslator,
+) {
+  const addressSchema = createAddressSchema(translateSharedErrors)
 
   return zod
     .object({
       name: zod.string().min(3, { message: translateErrors('nameRequired') }),
-      email: zod.email({ message: translateErrors('emailInvalid') }),
+      email: zod.email({ message: translateSharedErrors('emailInvalid') }),
       cpf: zod
         .string()
         .refine(isValidCpf, { message: translateErrors('cpfInvalid') })
         .transform((value) => value.replace(/\D/g, '')),
       phone: zod
         .string()
-        .refine(isValidPhone, { message: translateErrors('phoneInvalid') })
+        .refine(isValidPhone, { message: translateSharedErrors('phoneInvalid') })
         .transform((value) => value.replace(/\D/g, '')),
       address: addressSchema,
       monthlyIncome: zod
         .string()
-        .min(1, { message: translateErrors('monthlyIncomeRequired') })
+        .min(1, { message: translateSharedErrors('monthlyIncomeRequired') })
         .transform(parseCurrencyToNumber)
         .refine((value) => value > 0, {
-          message: translateErrors('monthlyIncomeInvalid'),
+          message: translateSharedErrors('monthlyIncomeInvalid'),
         }),
       password: zod
         .string()
