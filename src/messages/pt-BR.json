@@ -129,7 +129,9 @@
   "LoginPage": {
     "metaTitle": "Entrar | Cobuccio Wallet",
     "title": "Entrar",
-    "description": "Acesse sua conta da Cobuccio Wallet."
+    "description": "Acesse sua conta da Cobuccio Wallet.",
+    "signupPrompt": "Não tem uma conta?",
+    "signupLink": "Criar conta"
   },
   "LoginForm": {
     "fields": {
@@ -190,10 +192,6 @@
       "loading": "Buscando endereço...",
       "notFound": "CEP não encontrado. Preencha o endereço manualmente.",
       "error": "Não foi possível buscar o endereço. Preencha manualmente."
-    },
-    "success": {
-      "title": "Cadastro realizado com sucesso!",
-      "description": "Sua conta foi criada."
     },
     "errors": {
       "nameRequired": "Informe seu nome completo",

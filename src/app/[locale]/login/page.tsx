@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getTranslations } from 'next-intl/server'
 
 import { LoginForm } from '@/components/login-form'
+import { Link } from '@/i18n/navigation'
 
 export async function generateMetadata(): Promise<Metadata> {
   const translate = await getTranslations('LoginPage')
@@ -26,6 +27,13 @@ export default async function LoginPage() {
       </div>
 
       <LoginForm />
+
+      <p className="text-sm text-neutral-600 dark:text-neutral-400">
+        {translate('signupPrompt')}{' '}
+        <Link href="/signup" className="font-medium text-navy underline dark:text-white">
+          {translate('signupLink')}
+        </Link>
+      </p>
     </main>
   )
 }

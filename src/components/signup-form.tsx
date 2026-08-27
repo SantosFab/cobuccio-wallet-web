@@ -9,6 +9,8 @@ import { FormField } from '@/components/form-field'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
+import { useAuth } from '@/contexts/auth-context'
+import { useRouter } from '@/i18n/navigation'
 import { BRAZILIAN_STATES } from '@/lib/brazilian-states'
 import { maskCep, maskCpf, maskCurrency, maskPhone } from '@/lib/masks'
 import {
@@ -19,10 +21,7 @@ import {
 import { CepNotFoundError, lookupAddressByCep } from '@/services/cep-service'
 import { signup, SignupServiceError } from '@/services/signup-service'
 
-type SubmitState =
-  | { status: 'idle' }
-  | { status: 'error'; message: string }
-  | { status: 'success' }
+type SubmitState = { status: 'idle' } | { status: 'error'; message: string }
 
 type AddressLookupStatus = 'idle' | 'loading' | 'not-found' | 'error'
 
@@ -31,6 +30,8 @@ export function SignupForm() {
   const translateErrors = useTranslations('SignupForm.errors')
   const translateSharedErrors = useTranslations('FormErrors')
   const translateStates = useTranslations('States')
+  const { login } = useAuth()
+  const router = useRouter()
 
   const [submitState, setSubmitState] = useState<SubmitState>({ status: 'idle' })
   const [addressLookupStatus, setAddressLookupStatus] = useState<AddressLookupStatus>('idle')
@@ -75,7 +76,6 @@ export function SignupForm() {
 
     try {
       await signup(data)
-      setSubmitState({ status: 'success' })
     } catch (error) {
       const message =
         error instanceof SignupServiceError
@@ -85,6 +85,16 @@ export function SignupForm() {
           : translate('genericError')
 
       setSubmitState({ status: 'error', message })
+      return
+    }
+
+    try {
+      // The account already exists at this point — a failure here only
+      // means the automatic login didn't work, not that signup failed.
+      await login({ email: data.email, password: data.password })
+      router.push('/dashboard')
+    } catch {
+      router.push('/login')
     }
   }
 
@@ -114,17 +124,6 @@ export function SignupForm() {
 
       setAddressLookupStatus(error instanceof CepNotFoundError ? 'not-found' : 'error')
     }
-  }
-
-  if (submitState.status === 'success') {
-    return (
-      <div className="rounded-md border border-green-600/30 bg-green-600/10 p-6 text-center">
-        <h2 className="font-serif text-lg font-semibold">{translate('success.title')}</h2>
-        <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-          {translate('success.description')}
-        </p>
-      </div>
-    )
   }
 
   return (

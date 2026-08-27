@@ -129,7 +129,9 @@
   "LoginPage": {
     "metaTitle": "Log in | Cobuccio Wallet",
     "title": "Log in",
-    "description": "Access your Cobuccio Wallet account."
+    "description": "Access your Cobuccio Wallet account.",
+    "signupPrompt": "Don't have an account?",
+    "signupLink": "Create account"
   },
   "LoginForm": {
     "fields": {
@@ -190,10 +192,6 @@
       "loading": "Looking up address...",
       "notFound": "ZIP code not found. Please fill in the address manually.",
       "error": "Could not look up the address. Please fill in manually."
-    },
-    "success": {
-      "title": "Account created successfully!",
-      "description": "Your account has been created."
     },
     "errors": {
       "nameRequired": "Enter your full name",
