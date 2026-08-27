@@ -4,6 +4,8 @@ import { hasLocale, NextIntlClientProvider } from 'next-intl'
 import { notFound } from 'next/navigation'
 import { ThemeProvider } from 'next-themes'
 
+import { GuestHeaderControls } from '@/components/guest-header-controls'
+import { HeaderBrandLink } from '@/components/header-brand-link'
 import { UserMenu } from '@/components/user-menu/user-menu'
 import { AuthProvider } from '@/contexts/auth-context'
 import { routing } from '@/i18n/routing'
@@ -53,13 +55,9 @@ export default async function RootLayout({ children, params }: Props) {
           <NextIntlClientProvider>
             <AuthProvider>
               <header className="flex items-center justify-between gap-4 bg-navy px-4 py-3 text-white">
+                <HeaderBrandLink />
                 <div className="flex items-center gap-2">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-sm border border-gold font-serif text-sm text-gold">
-                    CW
-                  </span>
-                  <span className="font-serif text-lg tracking-wide">Cobuccio Wallet</span>
-                </div>
-                <div className="flex items-center gap-2">
+                  <GuestHeaderControls />
                   <UserMenu />
                 </div>
               </header>
