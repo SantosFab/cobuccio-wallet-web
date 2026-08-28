@@ -85,6 +85,7 @@
       "submitting": "Transferring..."
     },
     "genericError": "Could not transfer",
+    "success": "Transfer completed successfully",
     "errors": {
       "recipientRequired": "Enter the recipient's email or CPF",
       "recipientInvalid": "Enter a valid email or CPF",
@@ -136,6 +137,9 @@
     "brandTagline": "Your digital wallet — deposit, transfer and track it all in one place.",
     "signupPrompt": "Don't have an account?",
     "signupLink": "Create account"
+  },
+  "Auth": {
+    "sessionLoadError": "Could not verify your session. Please try again."
   },
   "LoginForm": {
     "fields": {
@@ -252,7 +256,8 @@
     "profileLink": "My profile",
     "theme": "Theme",
     "language": "Language",
-    "logout": "Log out"
+    "logout": "Log out",
+    "logoutError": "Could not log out. Please try again."
   },
   "ProfileForm": {
     "fields": {

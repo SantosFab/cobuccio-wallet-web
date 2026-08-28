@@ -85,6 +85,7 @@
       "submitting": "Transferindo..."
     },
     "genericError": "Não foi possível transferir",
+    "success": "Transferência realizada com sucesso",
     "errors": {
       "recipientRequired": "Informe o e-mail ou CPF do destinatário",
       "recipientInvalid": "Informe um e-mail ou CPF válido",
@@ -136,6 +137,9 @@
     "brandTagline": "Sua carteira digital — deposite, transfira e acompanhe tudo em um só lugar.",
     "signupPrompt": "Não tem uma conta?",
     "signupLink": "Criar conta"
+  },
+  "Auth": {
+    "sessionLoadError": "Não foi possível verificar sua sessão. Tente novamente."
   },
   "LoginForm": {
     "fields": {
@@ -252,7 +256,8 @@
     "profileLink": "Meu perfil",
     "theme": "Tema",
     "language": "Idioma",
-    "logout": "Sair"
+    "logout": "Sair",
+    "logoutError": "Não foi possível sair. Tente novamente."
   },
   "ProfileForm": {
     "fields": {

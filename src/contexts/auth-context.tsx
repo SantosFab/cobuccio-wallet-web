@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import { useTranslations } from 'next-intl'
 
 import {
   type CurrentUser,
@@ -9,6 +10,7 @@ import {
   refreshSession,
 } from '@/services/auth-service'
 import { login as loginService } from '@/services/login-service'
+import { toast } from '@/lib/toast-store'
 import type { LoginFormOutput } from '@/lib/validations/login-schema'
 
 type AuthState =
@@ -31,6 +33,7 @@ const AuthContext = createContext<AuthContextValue | null>(null)
 // business route needs them, not preemptively.
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [state, setState] = useState<AuthState>({ status: 'loading' })
+  const translate = useTranslations('Auth')
 
   useEffect(() => {
     async function loadSession() {
@@ -55,8 +58,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setState({ status: 'unauthenticated' })
     }
 
-    loadSession().catch(() => setState({ status: 'unauthenticated' }))
-  }, [])
+    loadSession().catch((error: unknown) => {
+      // A real network/backend failure looks identical to "no session" to
+      // the caller below (the UI still has to fall back to unauthenticated
+      // either way) — the difference is this gets logged and surfaced
+      // instead of silently swallowed.
+      console.error('[auth-context] - failed to load session.', error)
+      toast.error(translate('sessionLoadError'))
+      setState({ status: 'unauthenticated' })
+    })
+  }, [translate])
 
   async function handleLogin(payload: LoginFormOutput) {
     const user = await loginService(payload)

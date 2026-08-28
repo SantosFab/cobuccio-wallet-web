@@ -40,6 +40,7 @@ export function TransferForm({ onSuccess }: { onSuccess: () => void }) {
       await transfer(data.recipientIdentifier, data.amount)
       reset()
       onSuccess()
+      toast.success(translate('success'))
     } catch (error) {
       const message =
         error instanceof WalletServiceError
