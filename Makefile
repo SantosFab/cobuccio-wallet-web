@@ -72,7 +72,10 @@ test-watch: ## Runs unit tests in watch mode
 build-dev: check-docker versions ## [dev] Builds the development image
 	@${DOCKER_COMPOSE} build web-dev
 
-up-dev: check-docker versions ## [dev] Starts the development container (hot reload)
+clean-dev-cache: check-docker versions ## [dev] Removes the Next.js development cache
+	@${DOCKER_COMPOSE} run --rm --no-deps web-dev sh -lc 'rm -rf /app/.next'
+
+up-dev: clean-dev-cache ## [dev] Starts the development container (hot reload)
 	@${DOCKER_COMPOSE} up -d --force-recreate web-dev
 
 stop-dev: check-docker versions ## [dev] Stops every container in this repo
