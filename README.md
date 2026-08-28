@@ -84,11 +84,22 @@ $ make help                      # lists every available command
 
 Both repos must use the same `COMPOSE_PROJECT_NAME` in their `.env` so they join the same Docker network and can reach each other by hostname.
 
-## Getting Started (without Docker)
+## Testing
+
+Install the dependencies and run the unit tests locally:
 
 ```bash
+$ cp .env.example .env
 $ make install
 $ make test
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. You can start editing the page by modifying `src/app/page.tsx` — it auto-updates as you edit the file.
+## Local Development
+
+Make sure the API is running, then start the development server:
+
+```bash
+$ yarn dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to access the application. The routes are organized under `src/app/[locale]` and the default locale is `pt-BR`.
