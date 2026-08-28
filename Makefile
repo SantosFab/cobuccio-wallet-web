@@ -58,6 +58,15 @@ versions: ## Sets NODE_VERSION and SYSTEM_VERSION into the .env file
 install: ## Installs project dependencies locally (yarn, outside Docker)
 	@yarn install
 
+## --- Tests ---
+## Run directly on the host (like `make install`), not inside Docker.
+
+test: ## Runs unit tests
+	@yarn test
+
+test-watch: ## Runs unit tests in watch mode
+	@yarn test:watch
+
 ## --- Development ---
 
 build-dev: check-docker versions ## [dev] Builds the development image
@@ -89,7 +98,7 @@ help: versions ## Shows this help
 	@echo
 	@echo "Available commands:"
 	@echo
-	@sed -n -E -e 's|^([a-zA-Z_-]+):.+## (.+)|\1@\2|p' $(MAKEFILE_LIST) | column -s '@' -t
+	@sed -n -E -e 's|^([a-zA-Z0-9_-]+):.+## (.+)|\1@\2|p' $(MAKEFILE_LIST) | column -s '@' -t
 	@echo
 
 # vim: set ts=4 sw=4 tw=0 noet :
