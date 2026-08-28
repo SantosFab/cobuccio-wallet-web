@@ -60,6 +60,10 @@ Available commands, grouped the same way as in the `Makefile`:
 # dependencies
 $ make install                # installs project dependencies locally (yarn, outside Docker)
 
+# tests
+$ make test                   # runs unit tests once
+$ make test-watch             # runs unit tests in watch mode
+
 # development
 $ make build-dev               # [dev] builds the development image
 $ make up-dev                  # [dev] starts the development container (hot reload)
