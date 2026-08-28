@@ -83,7 +83,8 @@ Both repos must use the same `COMPOSE_PROJECT_NAME` in their `.env` so they join
 ## Getting Started (without Docker)
 
 ```bash
-$ yarn dev
+$ make install
+$ make test
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result. You can start editing the page by modifying `src/app/page.tsx` — it auto-updates as you edit the file.
