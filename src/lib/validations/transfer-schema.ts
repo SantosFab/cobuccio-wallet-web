@@ -3,6 +3,7 @@ import { z as zod } from 'zod'
 
 import { parseCurrencyToNumber } from '@/lib/masks'
 import { isValidCpf } from '@/lib/validators/cpf'
+import { MAX_MONEY_VALUE } from './limits'
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -23,7 +24,9 @@ export function createTransferSchema(translateErrors: TransferErrorsTranslator) 
       .string()
       .min(1, { message: translateErrors('amountRequired') })
       .transform(parseCurrencyToNumber)
-      .refine((value) => value > 0, { message: translateErrors('amountInvalid') }),
+      .refine((value) => value > 0 && value <= MAX_MONEY_VALUE, {
+        message: translateErrors('amountInvalid'),
+      }),
   })
 }
 

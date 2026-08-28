@@ -5,9 +5,9 @@ import { parseCurrencyToNumber } from '@/lib/masks'
 import { isValidCpf } from '@/lib/validators/cpf'
 import { isValidPhone } from '@/lib/validators/phone'
 import { createAddressSchema } from './address-schema'
+import { MAX_MONEY_VALUE } from './limits'
+import { STRONG_PASSWORD_REGEX } from './password'
 import type { SharedErrorsTranslator } from './shared-errors'
-
-const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/
 
 type SignupErrorsTranslator = ReturnType<typeof useTranslations<'SignupForm.errors'>>
 
@@ -34,7 +34,7 @@ export function createSignupSchema(
         .string()
         .min(1, { message: translateSharedErrors('monthlyIncomeRequired') })
         .transform(parseCurrencyToNumber)
-        .refine((value) => value > 0, {
+        .refine((value) => value > 0 && value <= MAX_MONEY_VALUE, {
           message: translateSharedErrors('monthlyIncomeInvalid'),
         }),
       password: zod

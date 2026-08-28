@@ -1,7 +1,7 @@
 import type { useTranslations } from 'next-intl'
 import { z as zod } from 'zod'
 
-const STRONG_PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/
+import { STRONG_PASSWORD_REGEX } from './password'
 
 type ChangePasswordErrorsTranslator = ReturnType<typeof useTranslations<'ChangePasswordForm.errors'>>
 

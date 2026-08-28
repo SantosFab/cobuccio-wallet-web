@@ -2,6 +2,7 @@ import type { useTranslations } from 'next-intl'
 import { z as zod } from 'zod'
 
 import { parseCurrencyToNumber } from '@/lib/masks'
+import { MAX_MONEY_VALUE } from './limits'
 
 // Simulated payment gateway, not a real one — mirrors the backend's
 // isValidTestCard() so the form can reject an invalid card before ever
@@ -29,7 +30,9 @@ export function createDepositSchema(translateErrors: DepositErrorsTranslator) {
       .string()
       .min(1, { message: translateErrors('amountRequired') })
       .transform(parseCurrencyToNumber)
-      .refine((value) => value > 0, { message: translateErrors('amountInvalid') }),
+      .refine((value) => value > 0 && value <= MAX_MONEY_VALUE, {
+        message: translateErrors('amountInvalid'),
+      }),
     cardNumber: zod
       .string()
       .min(1, { message: translateErrors('cardNumberRequired') })
